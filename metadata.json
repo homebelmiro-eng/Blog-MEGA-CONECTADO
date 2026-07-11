@@ -1,0 +1,6 @@
+{
+  "name": "MEGACONECTADO",
+  "description": "Portal de Tecnologia e Inovação focado em IA, Smartphones e Internet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
