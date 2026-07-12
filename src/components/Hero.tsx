@@ -11,6 +11,7 @@ export default function Hero() {
             <img 
               src={heroArticle.imageUrl} 
               alt={heroArticle.imageAlt} 
+              fetchPriority="high"
               className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/20 to-transparent" />

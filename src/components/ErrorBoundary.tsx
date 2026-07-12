@@ -15,6 +15,10 @@ class ErrorBoundary extends Component<Props, State> {
     hasError: false
   };
 
+  constructor(props: Props) {
+    super(props);
+  }
+
   public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
@@ -28,7 +32,7 @@ class ErrorBoundary extends Component<Props, State> {
       return <FallbackUI error={this.state.error} />;
     }
 
-    return this.props.children;
+    return (this as any).props.children;
   }
 }
 

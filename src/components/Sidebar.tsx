@@ -4,6 +4,7 @@ import { Search, TrendingUp, Grid, MousePointerClick, Mail } from 'lucide-react'
 import AdSpace from './AdSpace';
 import AuthorProfile from './AuthorProfile';
 import AITermOfDay from './AITermOfDay';
+import NewsletterWidget from './NewsletterWidget';
 
 export default function Sidebar() {
   return (
@@ -64,24 +65,7 @@ export default function Sidebar() {
       </div>
 
       {/* Newsletter Widget */}
-      <div className="bg-brand-primary text-white rounded-xl p-8 shadow-sm relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#0EA5E9 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <Mail className="text-brand-secondary w-12 h-12 mb-4" />
-          <h3 className="font-heading font-bold text-2xl mb-2">Newsletter</h3>
-          <p className="text-sm text-slate-300 mb-6">Receba as principais notícias de inovação e tecnologia diretamente na sua caixa de entrada.</p>
-          <form className="w-full flex flex-col gap-3">
-            <input 
-              type="email" 
-              placeholder="Seu email principal" 
-              className="w-full bg-white text-brand-primary border-none rounded py-3 px-4 text-sm focus:ring-2 focus:ring-brand-secondary outline-none" 
-            />
-            <button type="button" className="w-full bg-brand-secondary hover:bg-sky-500 text-white font-heading font-bold text-sm uppercase tracking-wider py-3 rounded transition-colors duration-300">
-              Inscrever-se
-            </button>
-          </form>
-        </div>
-      </div>
+      <NewsletterWidget />
 
       {/* Ad Space Vertical */}
       <AdSpace format="vertical" className="mt-4" />

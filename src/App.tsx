@@ -10,10 +10,14 @@ import Article from './pages/Article';
 import Page from './pages/Page';
 import Contact from './pages/Contact';
 
+import CookieConsent from './components/CookieConsent';
+import ProgressBar from './components/ProgressBar';
+
 export default function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 font-sans">
+        <ProgressBar />
         <Navbar />
         
         <div className="flex-grow">
@@ -29,6 +33,7 @@ export default function App() {
         </div>
 
         <Footer />
+        <CookieConsent />
       </div>
     </BrowserRouter>
   );

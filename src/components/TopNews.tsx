@@ -18,6 +18,7 @@ export default function TopNews() {
                 <img 
                   src={article.imageUrl} 
                   alt={article.imageAlt} 
+                  loading="lazy"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
                 />
               </div>

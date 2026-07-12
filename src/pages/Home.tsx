@@ -1,5 +1,6 @@
 import React from 'react';
 import Hero from '../components/Hero';
+import TrendingAINews from '../components/TrendingAINews';
 import TopNews from '../components/TopNews';
 import ArticleList from '../components/ArticleList';
 import Sidebar from '../components/Sidebar';
@@ -15,6 +16,10 @@ export default function Home() {
       
       <ErrorBoundary>
         <Hero />
+      </ErrorBoundary>
+      
+      <ErrorBoundary>
+        <TrendingAINews />
       </ErrorBoundary>
       
       <ErrorBoundary>

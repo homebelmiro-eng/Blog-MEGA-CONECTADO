@@ -24,7 +24,7 @@ function generateSitemap() {
   </url>`;
   });
 
-  const categories = ['tecnologia', 'inovacao', 'startups', 'seguranca', 'mais-lidas', 'todas', 'patrocinado'];
+  const categories = ['ia', 'software', 'seguranca', 'hardware', 'automacao', 'internet', 'tutoriais', 'reviews', 'comparativos'];
   const categoryUrls = categories.map(cat => {
     return `  <url>
     <loc>${BASE_URL}/categoria/${cat}</loc>

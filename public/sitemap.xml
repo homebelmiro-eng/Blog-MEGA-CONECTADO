@@ -6,17 +6,12 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://megaconectado.com.br/categoria/tecnologia</loc>
+    <loc>https://megaconectado.com.br/categoria/ia</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://megaconectado.com.br/categoria/inovacao</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://megaconectado.com.br/categoria/startups</loc>
+    <loc>https://megaconectado.com.br/categoria/software</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -26,17 +21,32 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://megaconectado.com.br/categoria/mais-lidas</loc>
+    <loc>https://megaconectado.com.br/categoria/hardware</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://megaconectado.com.br/categoria/todas</loc>
+    <loc>https://megaconectado.com.br/categoria/automacao</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://megaconectado.com.br/categoria/patrocinado</loc>
+    <loc>https://megaconectado.com.br/categoria/internet</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/categoria/tutoriais</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/categoria/reviews</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/categoria/comparativos</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -97,6 +107,66 @@
   </url>
   <url>
     <loc>https://megaconectado.com.br/artigo/12</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/13</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/14</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/15</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/16</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/17</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/18</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/19</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/20</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/21</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/22</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/23</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/artigo/24</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

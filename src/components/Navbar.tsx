@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Cpu, Search, Share2, Globe, Megaphone } from 'lucide-react';
 
 export default function Navbar() {
-  const links = ['Tecnologia', 'IA', 'Aplicativos', 'Internet', 'Smartphones', 'Tutoriais'];
+  const links = ['IA', 'Software', 'Segurança', 'Hardware', 'Automação', 'Internet', 'Tutoriais', 'Reviews', 'Comparativos'];
 
   return (
     <nav className="bg-white/90 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50">
