@@ -20,10 +20,10 @@ export default function App() {
           <ErrorBoundary>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/categoria/:slug" element={<Category />} />
               <Route path="/artigo/:id" element={<Article />} />
               <Route path="/pagina/:slug" element={<Page />} />
               <Route path="/contato" element={<Contact />} />
+              <Route path="/:slug" element={<Category />} />
             </Routes>
           </ErrorBoundary>
         </div>

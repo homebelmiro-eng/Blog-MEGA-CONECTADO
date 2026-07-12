@@ -34,7 +34,7 @@ export default function Sidebar() {
         <h3 className="font-heading font-bold text-lg text-brand-primary mb-6 border-b border-slate-200 pb-2">Conteúdo em Destaque</h3>
         <ul className="flex flex-col gap-4">
           <li className="group cursor-pointer">
-            <Link to="/categoria/mais-lidas" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
+            <Link to="/mais-lidas" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
               <TrendingUp className="text-brand-secondary w-5 h-5" />
               <div className="flex flex-col">
                 <span className="font-bold text-brand-primary">Mais Lidas</span>
@@ -43,7 +43,7 @@ export default function Sidebar() {
             </Link>
           </li>
           <li className="group cursor-pointer">
-            <Link to="/categoria/todas" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
+            <Link to="/todas" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
               <Grid className="text-brand-secondary w-5 h-5" />
               <div className="flex flex-col">
                 <span className="font-bold text-brand-primary">Categorias</span>
@@ -52,7 +52,7 @@ export default function Sidebar() {
             </Link>
           </li>
           <li className="group cursor-pointer">
-            <Link to="/categoria/patrocinado" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
+            <Link to="/patrocinado" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
               <MousePointerClick className="text-brand-secondary w-5 h-5" />
               <div className="flex flex-col">
                 <span className="font-bold text-brand-primary">Patrocinado</span>

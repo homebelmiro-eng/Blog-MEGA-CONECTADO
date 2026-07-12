@@ -26,7 +26,7 @@ export default function AITermOfDay() {
         </p>
         
         <Link 
-          to="/categoria/ia" 
+          to="/ia" 
           className="inline-flex items-center gap-2 text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors group uppercase tracking-wider"
         >
           Explorar Mais

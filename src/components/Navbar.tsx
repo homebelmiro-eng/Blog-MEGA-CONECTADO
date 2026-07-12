@@ -18,7 +18,7 @@ export default function Navbar() {
         <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {links.map((link) => (
             <li key={link}>
-              <Link to={`/categoria/${link.toLowerCase()}`} className="font-heading font-bold text-sm uppercase tracking-wide text-slate-600 hover:text-brand-secondary transition-colors">
+              <Link to={`/${link.toLowerCase()}`} className="font-heading font-bold text-sm uppercase tracking-wide text-slate-600 hover:text-brand-secondary transition-colors">
                 {link}
               </Link>
             </li>
