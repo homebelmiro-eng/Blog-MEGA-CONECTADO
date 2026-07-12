@@ -37,31 +37,31 @@ export default function Navbar() {
             ))}
             {/* Mega Menu Trigger */}
             <li 
-              className="h-full flex items-center relative"
+              className="h-full flex items-center"
               onMouseEnter={() => setIsMegaMenuOpen(true)}
               onMouseLeave={() => setIsMegaMenuOpen(false)}
             >
-              <button className="font-sans font-bold text-[13px] uppercase tracking-wide text-white/90 hover:text-white transition-colors flex items-center gap-1 h-full">
+              <button className="font-sans font-bold text-[13px] uppercase tracking-wide text-white/90 hover:text-white transition-colors flex items-center gap-1 h-full outline-none">
                 MAIS <ChevronDown className="w-4 h-4" />
               </button>
               
               {/* Mega Menu Dropdown */}
               {isMegaMenuOpen && (
-                <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[800px] bg-[#005ea6] shadow-2xl p-8 rounded-b-xl animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="flex justify-between items-center">
+                <div className="fixed top-16 left-0 right-0 w-full bg-[#005ea6] shadow-2xl border-t border-white/10 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="max-w-7xl mx-auto flex justify-between items-center p-8">
                     {/* Brand in Megamenu */}
                     <div className="flex flex-col gap-4 w-1/4">
-                      <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+                      <Link to="/" onClick={() => setIsMegaMenuOpen(false)} className="flex items-center gap-2 hover:opacity-90 transition-opacity">
                         <Cpu className="w-8 h-8 text-white" />
                         <span className="font-heading font-extrabold text-xl tracking-tighter text-white italic">
                           megaconectado
                         </span>
                       </Link>
                       <div className="flex gap-3 text-white/80">
-                        <Facebook className="w-5 h-5 hover:text-white cursor-pointer" />
-                        <Twitter className="w-5 h-5 hover:text-white cursor-pointer" />
-                        <Youtube className="w-5 h-5 hover:text-white cursor-pointer" />
-                        <Instagram className="w-5 h-5 hover:text-white cursor-pointer" />
+                        <a href="#" className="hover:text-white transition-colors"><Facebook className="w-5 h-5 cursor-pointer" /></a>
+                        <a href="#" className="hover:text-white transition-colors"><Twitter className="w-5 h-5 cursor-pointer" /></a>
+                        <a href="#" className="hover:text-white transition-colors"><Youtube className="w-5 h-5 cursor-pointer" /></a>
+                        <a href="#" className="hover:text-white transition-colors"><Instagram className="w-5 h-5 cursor-pointer" /></a>
                       </div>
                     </div>
 
@@ -71,6 +71,7 @@ export default function Navbar() {
                         <Link 
                           key={cat} 
                           to={`/categoria/${cat.toLowerCase().replace(/ /g, '-')}`}
+                          onClick={() => setIsMegaMenuOpen(false)}
                           className="bg-white/10 hover:bg-white/25 text-white/90 hover:text-white px-4 py-1.5 rounded text-[13px] font-medium transition-colors"
                         >
                           {cat}
@@ -89,10 +90,10 @@ export default function Navbar() {
               <Search className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-3 border-l border-white/20 pl-5">
-              <Facebook className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
-              <Twitter className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
-              <Youtube className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
-              <Instagram className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
+              <a href="#" className="hover:text-white transition-colors"><Facebook className="w-[18px] h-[18px]" /></a>
+              <a href="#" className="hover:text-white transition-colors"><Twitter className="w-[18px] h-[18px]" /></a>
+              <a href="#" className="hover:text-white transition-colors"><Youtube className="w-[18px] h-[18px]" /></a>
+              <a href="#" className="hover:text-white transition-colors"><Instagram className="w-[18px] h-[18px]" /></a>
             </div>
             <div className="border-l border-white/20 pl-5">
               <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#004A81] hover:bg-[#003966] transition-colors">
