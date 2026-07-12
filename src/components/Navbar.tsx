@@ -1,46 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Cpu, Search, Share2, Globe, Megaphone } from 'lucide-react';
+import { Search, Facebook, Twitter, Youtube, Instagram, Moon, ChevronDown, Cpu } from 'lucide-react';
+import SearchModal from './SearchModal';
 
 export default function Navbar() {
-  const links = ['IA', 'Software', 'Segurança', 'Hardware', 'Automação', 'Internet', 'Tutoriais', 'Reviews', 'Comparativos'];
+  const mainLinks = ['IA', 'Software', 'Segurança', 'Hardware', 'Automação', 'Internet'];
+  const megaMenuLinks = [
+    'Serviços Financeiros', 'Tablets', 'Smartwatches', 'Gadgets',
+    'Produtividade', 'TVs', 'Periféricos', 'Mobilidade',
+    'Computadores', 'Wearables', 'Casa Conectada e IoT', 'Fones de ouvido',
+    'Ciência e Saúde', 'Robótica', 'Blockchain'
+  ];
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white/90 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center py-4 px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2 mb-4 md:mb-0 cursor-pointer group hover:opacity-90 transition-opacity">
-          <Cpu className="w-8 h-8 text-brand-secondary group-hover:text-brand-tertiary transition-colors" />
-          <span className="font-heading font-extrabold text-2xl tracking-tighter text-brand-primary group-hover:opacity-80 transition-opacity">
-            MEGACONECTADO
-          </span>
-        </Link>
+    <>
+      <nav className="bg-[#0070C0] sticky top-0 z-50 text-white">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-4 sm:px-6 lg:px-8 h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 cursor-pointer group hover:opacity-90 transition-opacity">
+            <Cpu className="w-8 h-8 text-white" />
+            <span className="font-heading font-extrabold text-2xl tracking-tighter text-white italic">
+              megaconectado
+            </span>
+          </Link>
 
-        <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          {links.map((link) => (
-            <li key={link}>
-              <Link to={`/${link.toLowerCase()}`} className="font-heading font-bold text-sm uppercase tracking-wide text-slate-600 hover:text-brand-secondary transition-colors">
-                {link}
-              </Link>
+          {/* Main Links */}
+          <ul className="hidden md:flex items-center gap-x-6 h-full">
+            {mainLinks.map((link) => (
+              <li key={link} className="h-full flex items-center">
+                <Link to={`/${link.toLowerCase()}`} className="font-sans font-bold text-[13px] uppercase tracking-wide text-white/90 hover:text-white transition-colors">
+                  {link}
+                </Link>
+              </li>
+            ))}
+            {/* Mega Menu Trigger */}
+            <li 
+              className="h-full flex items-center relative"
+              onMouseEnter={() => setIsMegaMenuOpen(true)}
+              onMouseLeave={() => setIsMegaMenuOpen(false)}
+            >
+              <button className="font-sans font-bold text-[13px] uppercase tracking-wide text-white/90 hover:text-white transition-colors flex items-center gap-1 h-full">
+                MAIS <ChevronDown className="w-4 h-4" />
+              </button>
+              
+              {/* Mega Menu Dropdown */}
+              {isMegaMenuOpen && (
+                <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[800px] bg-[#005ea6] shadow-2xl p-8 rounded-b-xl animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="flex justify-between items-center">
+                    {/* Brand in Megamenu */}
+                    <div className="flex flex-col gap-4 w-1/4">
+                      <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+                        <Cpu className="w-8 h-8 text-white" />
+                        <span className="font-heading font-extrabold text-xl tracking-tighter text-white italic">
+                          megaconectado
+                        </span>
+                      </Link>
+                      <div className="flex gap-3 text-white/80">
+                        <Facebook className="w-5 h-5 hover:text-white cursor-pointer" />
+                        <Twitter className="w-5 h-5 hover:text-white cursor-pointer" />
+                        <Youtube className="w-5 h-5 hover:text-white cursor-pointer" />
+                        <Instagram className="w-5 h-5 hover:text-white cursor-pointer" />
+                      </div>
+                    </div>
+
+                    {/* Pills Grid */}
+                    <div className="w-3/4 flex flex-wrap gap-2 justify-center pl-8 border-l border-white/10">
+                      {megaMenuLinks.map((cat) => (
+                        <Link 
+                          key={cat} 
+                          to={`/categoria/${cat.toLowerCase().replace(/ /g, '-')}`}
+                          className="bg-white/10 hover:bg-white/25 text-white/90 hover:text-white px-4 py-1.5 rounded text-[13px] font-medium transition-colors"
+                        >
+                          {cat}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </li>
-          ))}
-        </ul>
+          </ul>
 
-        <div className="hidden lg:flex items-center gap-4 text-slate-500">
-          <button className="hover:text-brand-secondary transition-colors"><Share2 className="w-5 h-5" /></button>
-          <button className="hover:text-brand-secondary transition-colors"><Globe className="w-5 h-5" /></button>
-          <button className="hover:text-brand-secondary transition-colors"><Megaphone className="w-5 h-5" /></button>
-          <div className="relative ml-4">
-            <input
-              type="text"
-              placeholder="Buscar..."
-              className="bg-slate-100 border border-slate-200 rounded-full py-1.5 pl-4 pr-10 text-sm focus:outline-none focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary w-48 transition-all"
-            />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 hover:text-brand-secondary">
-              <Search className="w-4 h-4" />
+          {/* Right Side Icons */}
+          <div className="hidden lg:flex items-center gap-5 text-white/80">
+            <button onClick={() => setIsSearchOpen(true)} className="hover:text-white transition-colors">
+              <Search className="w-5 h-5" />
             </button>
+            <div className="flex items-center gap-3 border-l border-white/20 pl-5">
+              <Facebook className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
+              <Twitter className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
+              <Youtube className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
+              <Instagram className="w-[18px] h-[18px] hover:text-white cursor-pointer transition-colors" />
+            </div>
+            <div className="border-l border-white/20 pl-5">
+              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#004A81] hover:bg-[#003966] transition-colors">
+                <Moon className="w-4 h-4 text-white" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    </>
   );
 }

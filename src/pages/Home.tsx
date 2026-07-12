@@ -7,6 +7,8 @@ import Sidebar from '../components/Sidebar';
 import AdSpace from '../components/AdSpace';
 import ErrorBoundary from '../components/ErrorBoundary';
 import SEO from '../components/SEO';
+import AIComparison from '../components/AIComparison';
+import Newsletter from '../components/Newsletter';
 
 export default function Home() {
   return (
@@ -26,12 +28,21 @@ export default function Home() {
         <TopNews />
       </ErrorBoundary>
 
+      <ErrorBoundary>
+        <AIComparison />
+      </ErrorBoundary>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
-        <main className="lg:col-span-8">
+        <main className="lg:col-span-8 flex flex-col gap-12">
           <ErrorBoundary>
             <ArticleList />
           </ErrorBoundary>
+          
+          <ErrorBoundary>
+            <Newsletter />
+          </ErrorBoundary>
         </main>
+        
         <aside className="lg:col-span-4">
           <ErrorBoundary>
             <Sidebar />

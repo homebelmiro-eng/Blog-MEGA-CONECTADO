@@ -1,35 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, TrendingUp, Grid, MousePointerClick, Mail } from 'lucide-react';
 import AdSpace from './AdSpace';
 import AuthorProfile from './AuthorProfile';
 import AITermOfDay from './AITermOfDay';
 import NewsletterWidget from './NewsletterWidget';
+import SearchModal from './SearchModal';
 
 export default function Sidebar() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   return (
     <div className="flex flex-col gap-8">
       {/* Author Profile Widget */}
       <AuthorProfile />
-
+      
       {/* AI Term of the Day Widget */}
       <AITermOfDay />
-
+      
       {/* Search Widget */}
       <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
         <h3 className="font-heading font-bold text-lg text-brand-primary mb-4">Buscar</h3>
         <div className="relative">
-          <input 
-            type="text" 
-            placeholder="Pesquisar artigos..." 
-            className="w-full bg-slate-50 border border-slate-200 rounded py-3 px-4 focus:outline-none focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary transition-all" 
-          />
-          <button className="absolute right-3 top-1/2 -translate-y-1/2 hover:text-brand-secondary text-slate-400">
-            <Search className="w-5 h-5" />
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="w-full flex items-center bg-slate-50 border border-slate-200 rounded py-3 px-4 text-left text-slate-500 hover:border-brand-secondary hover:ring-1 hover:ring-brand-secondary transition-all"
+          >
+            <span className="flex-1">Pesquisar artigos...</span>
+            <Search className="w-5 h-5 text-slate-400" />
           </button>
         </div>
       </div>
 
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      
       {/* Tabs / Links Widget */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 shadow-sm overflow-hidden">
         <h3 className="font-heading font-bold text-lg text-brand-primary mb-6 border-b border-slate-200 pb-2">Conteúdo em Destaque</h3>
