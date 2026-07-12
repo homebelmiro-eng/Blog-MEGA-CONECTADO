@@ -3,10 +3,51 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Phone, Mail } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import SEO from '../components/SEO';
+import FAQ from '../components/FAQ';
+import { FAQItem } from '../types';
 import authorPortrait from '../assets/images/author_portrait_1783796349533.jpg';
 
 export default function Page() {
   const { slug } = useParams<{ slug: string }>();
+
+  // Default FAQs for institutional pages to improve GEO ranking
+  const getPageFAQ = (slug: string | undefined): FAQItem[] => {
+    switch (slug) {
+      case 'sobre-o-autor':
+        return [
+          {
+            question: "Quem é Divino Luciano Belmiro?",
+            answer: "Divino Luciano Belmiro é Psicanalista Clínico e Terapeuta Integrativo, além de editor do portal Mega Conectado, focado em tecnologia e inovação."
+          },
+          {
+            question: "Como entrar em contato com o autor?",
+            answer: "Você pode entrar em contato através do e-mail contato@megaconectado.com.br ou pelo telefone +55 (43) 98439-0879."
+          }
+        ];
+      case 'privacidade':
+        return [
+          {
+            question: "Como meus dados são protegidos no Mega Conectado?",
+            answer: "Seguimos rigorosamente a LGPD, utilizando criptografia e práticas de segurança avançadas para garantir que suas informações pessoais estejam seguras."
+          },
+          {
+            question: "O site utiliza cookies?",
+            answer: "Sim, utilizamos cookies para melhorar sua experiência de navegação e analisar o tráfego do site de forma anônima."
+          }
+        ];
+      default:
+        return [
+          {
+            question: "O que é o portal Mega Conectado?",
+            answer: "O Mega Conectado é um portal de notícias dedicado a Inteligência Artificial, Inovação e Tecnologia, trazendo análises diárias e tendências do mercado global."
+          },
+          {
+            question: "Como posso acompanhar as novidades do site?",
+            answer: "Você pode nos seguir nas redes sociais e ativar as notificações do navegador para receber os artigos mais recentes em tempo real."
+          }
+        ];
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -90,6 +131,8 @@ export default function Page() {
              </div>
              
              {renderContent()}
+
+             <FAQ items={getPageFAQ(slug)} />
            </article>
         </main>
         <aside className="lg:col-span-4 flex flex-col gap-8">

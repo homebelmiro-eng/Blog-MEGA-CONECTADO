@@ -39,7 +39,11 @@ function generateSitemap() {
   </url>`;
   });
 
-  const pages = ['sobre-o-autor', 'equipe-editorial', 'anuncie', 'privacidade', 'termos', 'politica-de-cookies'];
+  const pages = [
+    'sobre-nos', 'equipe-editorial', 'privacidade', 'termos', 
+    'politica-de-cookies', 'divulgacao-de-afiliados', 'politica-editorial', 
+    'correcoes-e-atualizacoes'
+  ];
   const pageUrls = pages.map(page => {
     return `  <url>
     <loc>${BASE_URL}/pagina/${page}</loc>
@@ -54,6 +58,16 @@ function generateSitemap() {
     <loc>${BASE_URL}/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/contato</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/sitemap</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 ${categoryUrls.join('\n')}
 ${articleUrls.join('\n')}

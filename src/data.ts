@@ -9,6 +9,20 @@ export const heroArticle: Article = {
   excerpt: 'A inteligência artificial generativa está redefinindo as fronteiras criativas. Descubra como novas ferramentas estão moldando o futuro de indústrias inteiras e o que isso significa para os profissionais da área tecnológica.',
   imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBWgJ2qCfmj3iBdTrsTBWA6iqbgnMo0OfOLnH-qxzK3hBAY5PHAXtjURgjIUL5TDOcfOnk0qi_ZOuS6ZDUelMp_ejTO22sWBfPf3ffAoKmspJXkLMjbnXutiKvHSCF3ja5sBcz9Z-rv71f6oMvlGSnox9bvxdb0cKEwwrBbaWKIbsFtVpbsMc8_9bUmB2fNrDEcrSBhWO6DcSas6cYu7d3M2g0EF0aJWcUbK06upuL3w1tp5mCCF_wdRIUEn07Q7x8Cr07lcIZzHfbm',
   imageAlt: 'Figura robótica interagindo com interface holográfica',
+  faq: [
+    {
+      question: "O que é IA Generativa?",
+      answer: "IA Generativa é um ramo da inteligência artificial que se concentra na criação de novos conteúdos, como textos, imagens, áudio e vídeo, baseando-se em padrões aprendidos de dados existentes."
+    },
+    {
+      question: "A IA vai substituir designers e redatores?",
+      answer: "A IA é vista como uma ferramenta de auxílio que aumenta a produtividade e criatividade, permitindo que profissionais foquem em tarefas estratégicas e conceituais, enquanto a IA lida com a execução repetitiva."
+    },
+    {
+      question: "Quais as principais ferramentas de design com IA em 2026?",
+      answer: "Atualmente, destacam-se ferramentas que integram geração de imagem em tempo real, edição vetorial automatizada e prototipagem dinâmica baseada em comandos de voz ou texto."
+    }
+  ]
 };
 
 export const heroSideArticles: Article[] = [

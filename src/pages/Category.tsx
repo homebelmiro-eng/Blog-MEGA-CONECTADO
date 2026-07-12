@@ -3,11 +3,31 @@ import { useParams, Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import AdSpace from '../components/AdSpace';
 import SEO from '../components/SEO';
+import FAQ from '../components/FAQ';
+import { Article, FAQItem } from '../types';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
-import { Article } from '../types';
 
 export default function Category() {
   const { slug } = useParams<{ slug: string }>();
+
+  // Category specific FAQs
+  const getCategoryFAQ = (slug: string | undefined): FAQItem[] => {
+    const catName = slug?.replace(/-/g, ' ') || 'Tecnologia';
+    return [
+      {
+        question: `Quais as principais novidades em ${catName} hoje?`,
+        answer: `As novidades mais recentes em ${catName} incluem avanços em eficiência, novas integrações de mercado e lançamentos de ferramentas que buscam otimizar o dia a dia de profissionais e usuários.`
+      },
+      {
+        question: `Como acompanhar tendências de ${catName}?`,
+        answer: `Para ficar por dentro de ${catName}, recomendamos acompanhar portais especializados como o Mega Conectado, que filtra as informações mais relevantes e traz análises aprofundadas sobre o setor.`
+      },
+      {
+        question: `Por que ler sobre ${catName} no Mega Conectado?`,
+        answer: `No Mega Conectado, focamos em conteúdo de qualidade que une a precisão técnica da ${catName} com uma visão humanizada e prática sobre como essas mudanças impactam sua vida.`
+      }
+    ];
+  };
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
@@ -83,6 +103,8 @@ export default function Category() {
                 </Link>
              ))}
            </div>
+
+           <FAQ items={getCategoryFAQ(slug)} />
         </main>
         <aside className="lg:col-span-4 flex flex-col gap-8">
           <AdSpace format="vertical" />

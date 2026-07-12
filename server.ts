@@ -63,7 +63,7 @@ async function startServer() {
 
   app.get('/api/trending-ai', async (req, res) => {
     try {
-      const prompt = `Faça uma pesquisa rápida na web pelas 3 principais notícias de hoje sobre Inteligência Artificial, Tecnologia e Inovação. 
+      const prompt = `Faça uma pesquisa rápida na web pelas 5 principais notícias de hoje sobre Inteligência Artificial, Tecnologia e Inovação. 
       Resuma cada uma delas de forma concisa em um parágrafo.
       Retorne APENAS um array JSON válido contendo objetos com 'title', 'summary' e 'sourceUrl'.
       Não inclua marcações markdown no JSON.`;
@@ -107,6 +107,16 @@ async function startServer() {
           title: "Novos chips aceleradores prometem mais eficiência",
           summary: "Uma nova geração de processadores otimizados para IA promete reduzir o consumo de energia em até 40% durante o treinamento e inferência de grandes modelos de linguagem.",
           sourceUrl: "https://megaconectado.com.br/hardware"
+        },
+        {
+          title: "IA na Saúde: Diagnósticos mais rápidos",
+          summary: "Ferramentas de inteligência artificial estão acelerando diagnósticos complexos em hospitais, auxiliando médicos na análise de exames de imagem e reduzindo o tempo de espera dos pacientes.",
+          sourceUrl: "https://megaconectado.com.br/ciencia-e-saude"
+        },
+        {
+          title: "A evolução da robótica autônoma",
+          summary: "Novos robôs com aprendizado de máquina integrado estão se tornando capazes de executar tarefas domésticas e industriais complexas sem supervisão direta.",
+          sourceUrl: "https://megaconectado.com.br/robotica"
         }
       ];
       
@@ -152,7 +162,11 @@ async function startServer() {
   </url>`;
       });
 
-      const pages = ['sobre-o-autor', 'equipe-editorial', 'anuncie', 'privacidade', 'termos', 'politica-de-cookies'];
+      const pages = [
+        'sobre-nos', 'equipe-editorial', 'privacidade', 'termos', 
+        'politica-de-cookies', 'divulgacao-de-afiliados', 'politica-editorial', 
+        'correcoes-e-atualizacoes'
+      ];
       const pageUrls = pages.map(page => {
         return `  <url>
     <loc>${BASE_URL}/pagina/${page}</loc>
@@ -167,6 +181,16 @@ async function startServer() {
     <loc>${BASE_URL}/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/contato</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/sitemap</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 ${categoryUrls.join('\n')}
 ${articleUrls.join('\n')}

@@ -54,7 +54,7 @@ export default function TrendingAINews() {
           <p className="text-sm">{error}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {news.map((item, index) => (
             <article key={index} className="flex flex-col bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300">
               <div className="flex items-center gap-2 mb-3">

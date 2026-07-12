@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar';
 import AdSpace from '../components/AdSpace';
 import SEO from '../components/SEO';
 import TableOfContents from '../components/TableOfContents';
+import FAQ from '../components/FAQ';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 import { Article as ArticleType } from '../types';
 
@@ -118,6 +119,10 @@ export default function Article() {
           <h2>Conclusão</h2>
           <p>Estar preparado para essas mudanças é o que diferenciará os líderes dos seguidores na próxima década. Acompanhar as notícias e tendências no Mega Conectado é o primeiro passo para garantir seu lugar nesse futuro promissor.</p>
         </section>
+
+        {article.faq && article.faq.length > 0 && (
+          <FAQ items={article.faq} />
+        )}
       </div>
     </>
   );
@@ -149,7 +154,7 @@ export default function Article() {
         <main className="lg:col-span-8 flex flex-col gap-6">
            <article className="bg-white rounded-xl border border-slate-200 overflow-hidden">
              {article.imageUrl && (
-               <div className="w-full h-[400px]">
+               <div className="w-full aspect-video md:h-[400px]">
                  <img src={article.imageUrl} alt={article.imageAlt} className="w-full h-full object-cover" />
                </div>
              )}

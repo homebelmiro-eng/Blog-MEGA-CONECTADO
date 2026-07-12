@@ -6,6 +6,16 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://megaconectado.com.br/contato</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/sitemap</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://megaconectado.com.br/categoria/ia</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -246,17 +256,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://megaconectado.com.br/pagina/sobre-o-autor</loc>
+    <loc>https://megaconectado.com.br/pagina/sobre-nos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://megaconectado.com.br/pagina/equipe-editorial</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://megaconectado.com.br/pagina/anuncie</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -272,6 +277,21 @@
   </url>
   <url>
     <loc>https://megaconectado.com.br/pagina/politica-de-cookies</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/pagina/divulgacao-de-afiliados</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/pagina/politica-editorial</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://megaconectado.com.br/pagina/correcoes-e-atualizacoes</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

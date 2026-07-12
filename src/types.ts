@@ -1,3 +1,8 @@
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 export interface Article {
   id: string;
   title: string;
@@ -7,4 +12,5 @@ export interface Article {
   excerpt?: string;
   imageUrl: string;
   imageAlt: string;
+  faq?: FAQItem[];
 }
