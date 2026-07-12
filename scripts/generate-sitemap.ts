@@ -24,7 +24,13 @@ function generateSitemap() {
   </url>`;
   });
 
-  const categories = ['ia', 'software', 'seguranca', 'hardware', 'automacao', 'internet', 'tutoriais', 'reviews', 'comparativos'];
+  const categories = [
+    'ia', 'software', 'seguranca', 'hardware', 'automacao', 'internet', 'tutoriais', 'reviews', 'comparativos',
+    'servicos-financeiros', 'tablets', 'smartwatches', 'gadgets',
+    'produtividade', 'tvs', 'perifericos', 'mobilidade',
+    'computadores', 'wearables', 'casa-conectada-e-iot', 'fones-de-ouvido',
+    'ciencia-e-saude', 'robotica', 'blockchain'
+  ];
   const categoryUrls = categories.map(cat => {
     return `  <url>
     <loc>${BASE_URL}/categoria/${cat}</loc>
