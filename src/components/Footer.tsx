@@ -18,9 +18,7 @@ export default function Footer() {
     { name: 'Política de Cookies', path: '/pagina/politica-de-cookies' },
     { name: 'Divulgação de Afiliados', path: '/pagina/divulgacao-de-afiliados' },
     { name: 'Nossa Equipe', path: '/pagina/equipe-editorial' },
-    { name: 'Política Editorial', path: '/pagina/politica-editorial' },
-    { name: 'Correções e Atualizações', path: '/pagina/correcoes-e-atualizacoes' },
-    { name: 'Sitemap (HTML)', path: '/sitemap' }
+    { name: 'Política Editorial', path: '/pagina/politica-editorial' }
   ];
 
   return (

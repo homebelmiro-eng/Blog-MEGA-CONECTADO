@@ -11,11 +11,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://megaconectado.com.br/sitemap</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://megaconectado.com.br/categoria/ia</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -287,11 +282,6 @@
   </url>
   <url>
     <loc>https://megaconectado.com.br/pagina/politica-editorial</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://megaconectado.com.br/pagina/correcoes-e-atualizacoes</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -50,6 +50,12 @@ export default function Home() {
       </ErrorBoundary>
 
       <ErrorBoundary>
+        <div className="my-12">
+          <Newsletter />
+        </div>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
         <AIComparison />
       </ErrorBoundary>
 
@@ -59,10 +65,6 @@ export default function Home() {
             <ArticleList />
           </ErrorBoundary>
           
-          <ErrorBoundary>
-            <Newsletter />
-          </ErrorBoundary>
-
           <ErrorBoundary>
             <FAQ items={homeFAQ} />
           </ErrorBoundary>

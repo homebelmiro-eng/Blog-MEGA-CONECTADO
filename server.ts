@@ -164,8 +164,7 @@ async function startServer() {
 
       const pages = [
         'sobre-nos', 'equipe-editorial', 'privacidade', 'termos', 
-        'politica-de-cookies', 'divulgacao-de-afiliados', 'politica-editorial', 
-        'correcoes-e-atualizacoes'
+        'politica-de-cookies', 'divulgacao-de-afiliados', 'politica-editorial'
       ];
       const pageUrls = pages.map(page => {
         return `  <url>
@@ -184,11 +183,6 @@ async function startServer() {
   </url>
   <url>
     <loc>${BASE_URL}/contato</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>${BASE_URL}/sitemap</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
