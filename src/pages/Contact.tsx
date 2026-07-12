@@ -69,12 +69,12 @@ export default function Contact() {
                 <div className="flex flex-col items-center p-6 bg-slate-50 rounded-lg text-center border border-slate-100">
                   <Phone className="w-8 h-8 text-brand-secondary mb-3" />
                   <h3 className="font-bold text-brand-primary mb-1">Telefone</h3>
-                  <p className="text-sm text-slate-500">(11) 9999-0000</p>
+                  <p className="text-sm text-slate-500">+55 (43) 98439-0879</p>
                 </div>
                 <div className="flex flex-col items-center p-6 bg-slate-50 rounded-lg text-center border border-slate-100">
                   <MapPin className="w-8 h-8 text-brand-secondary mb-3" />
                   <h3 className="font-bold text-brand-primary mb-1">Endereço</h3>
-                  <p className="text-sm text-slate-500">Av. Paulista, São Paulo - SP</p>
+                  <p className="text-sm text-slate-500">Londrina, Paraná, Brasil</p>
                 </div>
              </div>
 
