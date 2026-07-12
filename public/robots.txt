@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://megaconectado.com.br/sitemap.xml

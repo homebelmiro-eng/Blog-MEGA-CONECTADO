@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Cpu, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
@@ -8,10 +9,10 @@ export default function Footer() {
         
         {/* Brand Column */}
         <div className="flex flex-col items-start gap-4">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 mb-2 hover:opacity-90 transition-opacity">
             <Cpu className="w-8 h-8 text-brand-secondary" />
             <span className="font-heading font-extrabold text-xl text-white tracking-tighter">MEGACONECTADO</span>
-          </div>
+          </Link>
           <p className="text-sm opacity-80 leading-relaxed">
             Sua fonte diária de notícias, análises e tendências sobre Inteligência Artificial, Inovação e Tecnologia. Editado por Divino Luciano Belmiro.
           </p>
@@ -20,25 +21,26 @@ export default function Footer() {
         {/* Links 1 */}
         <div className="flex flex-col gap-3">
           <h4 className="font-heading font-bold text-white text-base mb-2 uppercase tracking-wider">Navegação</h4>
-          <a href="#" className="hover:text-white hover:underline transition-colors">Sobre o Autor</a>
-          <a href="#" className="hover:text-white hover:underline transition-colors">Equipe Editorial</a>
-          <a href="#" className="hover:text-white hover:underline transition-colors">Anuncie</a>
+          <Link to="/pagina/sobre-o-autor" className="hover:text-white hover:underline transition-colors">Sobre o Autor</Link>
+          <Link to="/pagina/equipe-editorial" className="hover:text-white hover:underline transition-colors">Equipe Editorial</Link>
+          <Link to="/pagina/anuncie" className="hover:text-white hover:underline transition-colors">Anuncie</Link>
+          <Link to="/contato" className="hover:text-white hover:underline transition-colors">Contato</Link>
         </div>
 
         {/* Links 2 */}
         <div className="flex flex-col gap-3">
           <h4 className="font-heading font-bold text-white text-base mb-2 uppercase tracking-wider">Legal</h4>
-          <a href="#" className="hover:text-white hover:underline transition-colors">Privacidade</a>
-          <a href="#" className="hover:text-white hover:underline transition-colors">Termos</a>
-          <a href="#" className="hover:text-white hover:underline transition-colors">Política de Cookies</a>
+          <Link to="/pagina/privacidade" className="hover:text-white hover:underline transition-colors">Privacidade</Link>
+          <Link to="/pagina/termos" className="hover:text-white hover:underline transition-colors">Termos</Link>
+          <Link to="/pagina/politica-de-cookies" className="hover:text-white hover:underline transition-colors">Política de Cookies</Link>
         </div>
 
         {/* Contact */}
         <div className="flex flex-col gap-3">
           <h4 className="font-heading font-bold text-white text-base mb-2 uppercase tracking-wider">Fale Conosco</h4>
-          <a href="mailto:homebelmiro@gmail.com" className="flex items-center gap-2 hover:text-white hover:underline transition-colors">
+          <a href="mailto:contato@megaconectado.com.br" className="flex items-center gap-2 hover:text-white hover:underline transition-colors">
             <Mail className="w-5 h-5 text-brand-secondary" /> 
-            <span className="text-sm">homebelmiro@gmail.com</span>
+            <span className="text-sm">contato@megaconectado.com.br</span>
           </a>
           <a href="tel:+5543984390879" className="flex items-center gap-2 hover:text-white hover:underline transition-colors">
             <Phone className="w-5 h-5 text-brand-secondary" /> 

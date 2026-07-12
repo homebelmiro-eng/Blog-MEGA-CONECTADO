@@ -1,13 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Search, TrendingUp, Grid, MousePointerClick, Mail } from 'lucide-react';
 import AdSpace from './AdSpace';
 import AuthorProfile from './AuthorProfile';
+import AITermOfDay from './AITermOfDay';
 
 export default function Sidebar() {
   return (
     <div className="flex flex-col gap-8">
       {/* Author Profile Widget */}
       <AuthorProfile />
+
+      {/* AI Term of the Day Widget */}
+      <AITermOfDay />
 
       {/* Search Widget */}
       <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
@@ -29,31 +34,31 @@ export default function Sidebar() {
         <h3 className="font-heading font-bold text-lg text-brand-primary mb-6 border-b border-slate-200 pb-2">Conteúdo em Destaque</h3>
         <ul className="flex flex-col gap-4">
           <li className="group cursor-pointer">
-            <a href="#" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
+            <Link to="/categoria/mais-lidas" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
               <TrendingUp className="text-brand-secondary w-5 h-5" />
               <div className="flex flex-col">
                 <span className="font-bold text-brand-primary">Mais Lidas</span>
                 <span className="text-xs text-slate-400">Os artigos mais populares da semana</span>
               </div>
-            </a>
+            </Link>
           </li>
           <li className="group cursor-pointer">
-            <a href="#" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
+            <Link to="/categoria/todas" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
               <Grid className="text-brand-secondary w-5 h-5" />
               <div className="flex flex-col">
                 <span className="font-bold text-brand-primary">Categorias</span>
                 <span className="text-xs text-slate-400">Explore nossos tópicos principais</span>
               </div>
-            </a>
+            </Link>
           </li>
           <li className="group cursor-pointer">
-            <a href="#" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
+            <Link to="/categoria/patrocinado" className="flex items-center gap-3 text-slate-600 hover:bg-slate-100 p-2 rounded transition-transform origin-left group-hover:scale-[1.02]">
               <MousePointerClick className="text-brand-secondary w-5 h-5" />
               <div className="flex flex-col">
                 <span className="font-bold text-brand-primary">Patrocinado</span>
                 <span className="text-xs text-slate-400">Conteúdo de nossos parceiros</span>
               </div>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

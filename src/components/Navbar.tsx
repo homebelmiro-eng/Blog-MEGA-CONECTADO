@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Cpu, Search, Share2, Globe, Megaphone } from 'lucide-react';
 
 export default function Navbar() {
@@ -7,19 +8,19 @@ export default function Navbar() {
   return (
     <nav className="bg-white/90 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center py-4 px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 mb-4 md:mb-0 cursor-pointer group">
+        <Link to="/" className="flex items-center gap-2 mb-4 md:mb-0 cursor-pointer group hover:opacity-90 transition-opacity">
           <Cpu className="w-8 h-8 text-brand-secondary group-hover:text-brand-tertiary transition-colors" />
           <span className="font-heading font-extrabold text-2xl tracking-tighter text-brand-primary group-hover:opacity-80 transition-opacity">
             MEGACONECTADO
           </span>
-        </div>
+        </Link>
 
         <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {links.map((link) => (
             <li key={link}>
-              <a href="#" className="font-heading font-bold text-sm uppercase tracking-wide text-slate-600 hover:text-brand-secondary transition-colors">
+              <Link to={`/categoria/${link.toLowerCase()}`} className="font-heading font-bold text-sm uppercase tracking-wide text-slate-600 hover:text-brand-secondary transition-colors">
                 {link}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
