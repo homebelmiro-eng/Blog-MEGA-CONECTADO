@@ -9,6 +9,7 @@ import Category from './pages/Category';
 import Article from './pages/Article';
 import Page from './pages/Page';
 import Contact from './pages/Contact';
+import Sitemap from './pages/Sitemap';
 
 import CookieConsent from './components/CookieConsent';
 import ProgressBar from './components/ProgressBar';
@@ -28,6 +29,7 @@ export default function App() {
               <Route path="/pagina/:slug" element={<Page />} />
               <Route path="/categoria/:slug" element={<Category />} />
               <Route path="/contato" element={<Contact />} />
+              <Route path="/sitemap" element={<Sitemap />} />
               <Route path="/:slug" element={<Category />} />
             </Routes>
           </ErrorBoundary>
