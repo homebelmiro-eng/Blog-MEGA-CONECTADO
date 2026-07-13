@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { 
   ArrowLeft, BookOpen, X, Eye, Calendar, User, Tag, Share2, 
   Facebook, Twitter, Linkedin, Link as LinkIcon, MessageSquare,
-  ChevronRight, Clock, MapPin, Bookmark, ExternalLink
+  ChevronRight, Clock, MapPin, Bookmark, ExternalLink,
+  Volume2, Square, Pause, Play
 } from 'lucide-react';
 import { articleService } from '../lib/services';
 import { isFirebaseConfigured } from '../lib/firebase';
@@ -106,6 +107,58 @@ export default function Article() {
     };
   }, [isReaderMode]);
 
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isPausedAudio, setIsPausedAudio] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  const handlePlayAudio = () => {
+    if (!article) return;
+    
+    if (isPausedAudio) {
+      window.speechSynthesis.resume();
+      setIsPausedAudio(false);
+      setIsPlayingAudio(true);
+      return;
+    }
+    
+    if (isPlayingAudio) {
+      window.speechSynthesis.pause();
+      setIsPausedAudio(true);
+      setIsPlayingAudio(false);
+      return;
+    }
+    
+    const plainText = (article.content || '').replace(/[#*_>\[\]]/g, '').replace(/\n/g, ' ');
+    const utterance = new SpeechSynthesisUtterance(article.title + '. ' + plainText);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 1.0;
+    
+    utterance.onend = () => {
+      setIsPlayingAudio(false);
+      setIsPausedAudio(false);
+    };
+    
+    utterance.onerror = () => {
+      setIsPlayingAudio(false);
+      setIsPausedAudio(false);
+    };
+    
+    window.speechSynthesis.speak(utterance);
+    setIsPlayingAudio(true);
+    setIsPausedAudio(false);
+  };
+  
+  const handleStopAudio = () => {
+    window.speechSynthesis.cancel();
+    setIsPlayingAudio(false);
+    setIsPausedAudio(false);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -176,13 +229,31 @@ export default function Article() {
           </div>
           
           <div className="flex items-center gap-2">
+            {(isPlayingAudio || isPausedAudio) && (
+              <button 
+                onClick={handleStopAudio}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-full bg-rose-100 hover:bg-rose-200 text-rose-600 transition-all text-xs font-bold uppercase tracking-wider"
+                title="Parar Áudio"
+              >
+                <Square className="w-4 h-4" />
+              </button>
+            )}
+            <button 
+              onClick={handlePlayAudio}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full transition-all shadow-md hover:shadow-lg text-xs font-bold uppercase tracking-wider ${isPlayingAudio ? 'bg-brand-secondary text-white' : 'bg-slate-100 hover:bg-slate-200 text-brand-primary border border-slate-200'}`}
+              title={isPlayingAudio ? 'Pausar Áudio' : 'Ouvir Artigo'}
+            >
+              {isPlayingAudio ? <Pause className="w-4 h-4" /> : isPausedAudio ? <Play className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              <span className="hidden sm:inline">{isPlayingAudio ? 'Pausar' : isPausedAudio ? 'Continuar' : 'Ouvir Artigo'}</span>
+            </button>
+
             <button 
               onClick={() => setIsReaderMode(!isReaderMode)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-primary hover:bg-brand-secondary text-white transition-all shadow-md hover:shadow-lg text-xs font-bold uppercase tracking-wider"
               title="Modo de Leitura"
             >
               {isReaderMode ? <X className="w-4 h-4" /> : <BookOpen className="w-4 h-4" />}
-              <span>{isReaderMode ? 'Sair' : 'Modo Leitura'}</span>
+              <span className="hidden sm:inline">{isReaderMode ? 'Sair' : 'Modo Leitura'}</span>
             </button>
           </div>
         </div>
