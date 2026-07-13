@@ -1,3 +1,5 @@
+import { generateSlug } from './utils';
+
 // This service will now act as a proxy to our server-side API to keep the Gemini key secure
 export const geminiService = {
   async generateContent(prompt: string) {
@@ -37,6 +39,6 @@ export const geminiService = {
   async generateSeoSlug(title: string) {
     const prompt = `Crie um slug otimizado para SEO, curto e direto (apenas palavras-chave essenciais, sem stop words, separado por hífens, minúsculo, sem acentos) para o seguinte título de artigo: "${title}". Retorne APENAS o slug. Ex: inteligencia-artificial-saude`;
     const response = await this.generateContent(prompt);
-    return response.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]/g, '').replace(/^-+|-+$/g, '');
+    return generateSlug(response);
   }
 };

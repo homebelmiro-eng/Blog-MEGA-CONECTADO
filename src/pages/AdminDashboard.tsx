@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { generateSlug } from '../lib/utils';
 
 export default function AdminDashboard() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -133,14 +134,7 @@ export default function AdminDashboard() {
       for (const articleDoc of articlesSnap.docs) {
         const data = articleDoc.data() as Article;
         if (!data.slug) {
-          const generatedSlug = data.title
-            .toLowerCase()
-            .trim()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/[\s-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
+          const generatedSlug = generateSlug(data.title);
             
           await updateDoc(doc(db, 'articles', articleDoc.id), {
             slug: generatedSlug

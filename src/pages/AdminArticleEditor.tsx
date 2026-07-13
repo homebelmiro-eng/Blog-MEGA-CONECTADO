@@ -24,6 +24,7 @@ import { getDb } from '../lib/firebase';
 import { uploadImage } from '../lib/storage';
 import { geminiService } from '../lib/gemini';
 import toast from 'react-hot-toast';
+import { generateSlug } from '../lib/utils';
 
 const articleSchema = z.object({
   title: z.string().min(5, 'Título deve ter pelo menos 5 caracteres'),
@@ -97,14 +98,7 @@ export default function AdminArticleEditor() {
 
   useEffect(() => {
     if (title && id === 'novo') {
-      const slug = title
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-      setValue('slug', slug);
+      setValue('slug', generateSlug(title));
     }
   }, [title, setValue, id]);
 
