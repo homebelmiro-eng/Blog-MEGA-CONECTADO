@@ -56,46 +56,72 @@ export default function Page() {
   const renderContent = () => {
     if (slug === 'sobre-o-autor') {
       return (
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col md:flex-row gap-8 items-start">
+        <div className="flex flex-col gap-10">
+          <div className="relative group overflow-hidden rounded-2xl shadow-2xl h-[300px] md:h-[450px]">
             <img 
               src={authorPortrait} 
-              alt="Foto de Divino Luciano Belmiro" 
-              className="w-48 h-48 rounded-2xl object-cover shadow-md border-4 border-white"
+              alt="Divino Luciano Belmiro" 
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="flex flex-col gap-4">
-              <div>
-                <h2 className="font-heading font-extrabold text-3xl text-brand-primary mb-2">Divino Luciano Belmiro</h2>
-                <p className="text-xl font-semibold text-brand-secondary">Psicanalista Clínico & Terapeuta Integrativo</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
+              <div className="flex flex-col gap-2">
+                <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-white tracking-tight">Divino Luciano Belmiro</h2>
+                <p className="text-lg md:text-2xl font-semibold text-brand-secondary">Psicanalista Clínico & Terapeuta Integrativo</p>
               </div>
-              
-              <div className="flex flex-col gap-2 text-slate-600">
-                <div className="flex items-center gap-2">
-                  <Phone className="w-5 h-5 text-brand-secondary" />
-                  <span>+55 (43) 98439-0879</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-brand-secondary" />
-                  <span>contato@megaconectado.com.br</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-brand-secondary" />
-                  <span>Londrina, Paraná, Brasil</span>
-                </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:bg-white hover:border-brand-secondary/30 group">
+              <div className="p-3 bg-brand-secondary/10 rounded-lg text-brand-secondary group-hover:bg-brand-secondary group-hover:text-white transition-colors">
+                <Phone className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Telefone</span>
+                <span className="font-bold text-brand-primary">+55 (43) 98439-0879</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:bg-white hover:border-brand-secondary/30 group">
+              <div className="p-3 bg-brand-secondary/10 rounded-lg text-brand-secondary group-hover:bg-brand-secondary group-hover:text-white transition-colors">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">E-mail</span>
+                <span className="font-bold text-brand-primary">contato@megaconectado.com.br</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:bg-white hover:border-brand-secondary/30 group">
+              <div className="p-3 bg-brand-secondary/10 rounded-lg text-brand-secondary group-hover:bg-brand-secondary group-hover:text-white transition-colors">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Localização</span>
+                <span className="font-bold text-brand-primary">Londrina, PR, Brasil</span>
               </div>
             </div>
           </div>
           
           <div className="prose prose-lg prose-slate max-w-none">
-            <p>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="h-px flex-1 bg-slate-200"></div>
+              <h3 className="font-heading font-bold text-brand-primary m-0 uppercase tracking-[0.2em] text-sm">Biografia & Atuação</h3>
+              <div className="h-px flex-1 bg-slate-200"></div>
+            </div>
+            <p className="lead text-xl text-slate-600 font-medium">
               Com uma abordagem que une a escuta analítica profunda e práticas integrativas de saúde, 
-              dedica-se a ajudar pessoas a ressignificarem suas dores e encontrarem equilíbrio emocional.
+              Divino Luciano Belmiro dedica-se a ajudar pessoas a ressignificarem suas dores e encontrarem equilíbrio emocional.
             </p>
             <p>
               Sua jornada profissional é marcada pela busca constante por conhecimento e pela paixão 
-              em compreender a complexidade da mente humana. Através do portal Mega Conectado, 
-              busca compartilhar insights valiosos e promover a conscientização sobre saúde mental 
-              e bem-estar no mundo digital.
+              em compreender a complexidade da mente humana. Como Psicanalista Clínico, utiliza ferramentas 
+              técnicas para explorar o inconsciente e promover o autoconhecimento.
+            </p>
+            <p>
+              Além de sua atuação clínica, é o editor-chefe do portal <strong>Mega Conectado</strong>, 
+              onde funde seu interesse por comportamento humano com a inovação tecnológica. No portal, 
+              ele analisa como a Inteligência Artificial e as transformações digitais impactam nossa 
+              psique e o tecido social, promovendo um debate humanizado sobre o futuro da tecnologia.
             </p>
           </div>
         </div>

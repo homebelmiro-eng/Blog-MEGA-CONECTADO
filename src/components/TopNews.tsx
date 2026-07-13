@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Zap, ArrowRight } from 'lucide-react';
 import { topNewsArticles } from '../data';
 
+import { getArticleUrl } from '../lib/navigation';
+
 export default function TopNews() {
   return (
     <section className="mb-20">
@@ -12,15 +14,17 @@ export default function TopNews() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {topNewsArticles.map((article) => (
-          <Link to={`/artigo/${article.id}`} key={article.id} className="block h-full group">
+          <Link to={getArticleUrl(article)} key={article.id} className="block h-full group">
             <article className="flex flex-col h-full bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-brand-secondary hover:shadow-sm transition-all duration-300">
               <div className="h-40 overflow-hidden relative">
-                <img 
-                  src={article.imageUrl} 
-                  alt={article.imageAlt} 
-                  loading="lazy"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
-                />
+                {article.imageUrl && (
+                  <img 
+                    src={article.imageUrl} 
+                    alt={article.imageAlt} 
+                    loading="lazy"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                  />
+                )}
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <span className="font-mono text-xs text-brand-secondary mb-2 uppercase tracking-widest">{article.category}</span>

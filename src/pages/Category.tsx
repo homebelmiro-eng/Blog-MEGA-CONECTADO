@@ -5,6 +5,8 @@ import AdSpace from '../components/AdSpace';
 import SEO from '../components/SEO';
 import FAQ from '../components/FAQ';
 import { Article, FAQItem } from '../types';
+import { getArticleUrl } from '../lib/navigation';
+import { formatDate } from '../lib/utils';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 
 export default function Category() {
@@ -75,15 +77,17 @@ export default function Category() {
         <main className="lg:col-span-8 flex flex-col gap-6">
            <div className="flex flex-col gap-8">
              {articles.map((article) => (
-                <Link to={`/artigo/${article.id}`} key={article.id} className="block group">
-                  <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-slate-100 last:border-0">
+                <Link to={getArticleUrl(article)} key={article.id} className="block group">
+                   <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-slate-100 last:border-0">
                     <div className="md:w-2/5 h-48 rounded-xl overflow-hidden border border-slate-200 group-hover:border-brand-secondary transition-colors">
-                      <img 
-                        src={article.imageUrl} 
-                        alt={article.imageAlt} 
-                        loading="lazy"
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
-                      />
+                      {article.imageUrl && (
+                        <img 
+                          src={article.imageUrl} 
+                          alt={article.imageAlt} 
+                          loading="lazy"
+                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
+                        />
+                      )}
                     </div>
                     <div className="md:w-3/5 flex flex-col justify-center">
                       <span className="font-mono text-xs text-brand-secondary mb-2 uppercase tracking-widest">{article.category}</span>
@@ -93,7 +97,7 @@ export default function Category() {
                       <div className="flex items-center text-sm text-slate-400 mb-4">
                         <span>Por: {article.author || 'Equipe Editorial'}</span>
                         <span className="mx-2">•</span>
-                        <span>{article.date}</span>
+                        <span>{formatDate(article.date)}</span>
                       </div>
                       <p className="text-slate-600 line-clamp-2">
                         {article.excerpt || "Este artigo é uma simulação de conteúdo. O texto completo será carregado na página do artigo."}

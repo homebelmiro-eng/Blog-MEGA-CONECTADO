@@ -1,0 +1,49 @@
+{
+  "collections": {
+    "articles": {
+      "id": "string",
+      "title": "string",
+      "slug": "string",
+      "category": "string",
+      "authorId": "string",
+      "date": "timestamp",
+      "excerpt": "string",
+      "content": "string",
+      "imageUrl": "string",
+      "imageAlt": "string",
+      "views": "number",
+      "status": "string",
+      "tags": "array",
+      "seo": {
+        "title": "string",
+        "description": "string",
+        "keywords": "array"
+      }
+    },
+    "categories": {
+      "id": "string",
+      "name": "string",
+      "slug": "string",
+      "description": "string"
+    },
+    "authors": {
+      "id": "string",
+      "name": "string",
+      "bio": "string",
+      "avatarUrl": "string",
+      "role": "string"
+    },
+    "users": {
+      "uid": "string",
+      "email": "string",
+      "displayName": "string",
+      "photoURL": "string",
+      "role": "string"
+    },
+    "settings": {
+      "siteName": "string",
+      "description": "string",
+      "googleAnalyticsId": "string"
+    }
+  }
+}

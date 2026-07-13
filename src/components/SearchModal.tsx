@@ -3,6 +3,7 @@ import { Search, X, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 import { Article } from '../types';
+import { getArticleUrl } from '../lib/navigation';
 
 export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [query, setQuery] = useState('');
@@ -99,7 +100,7 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
               {results.map((article) => (
                 <li key={article.id}>
                   <Link 
-                    to={`/artigo/${article.id}`} 
+                    to={getArticleUrl(article)} 
                     className="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors group"
                     onClick={onClose}
                   >

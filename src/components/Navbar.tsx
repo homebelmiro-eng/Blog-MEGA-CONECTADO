@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Facebook, Twitter, Youtube, Instagram, Moon, ChevronDown, Cpu } from 'lucide-react';
+import { Search, Facebook, Twitter, Youtube, Instagram, Moon, ChevronDown, Cpu, User } from 'lucide-react';
 import SearchModal from './SearchModal';
+import { useAuth } from '../lib/AuthContext';
 
 export default function Navbar() {
+  const { user, profile } = useAuth();
   const mainLinks = ['IA', 'Software', 'Segurança', 'Hardware', 'Automação', 'Internet'];
   const megaMenuLinks = [
     'Serviços Financeiros', 'Tablets', 'Smartwatches', 'Gadgets',
@@ -89,12 +91,22 @@ export default function Navbar() {
             <button onClick={() => setIsSearchOpen(true)} className="hover:text-white transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-3 border-l border-white/20 pl-5">
-              <a href="#" className="hover:text-white transition-colors"><Facebook className="w-[18px] h-[18px]" /></a>
-              <a href="#" className="hover:text-white transition-colors"><Twitter className="w-[18px] h-[18px]" /></a>
-              <a href="#" className="hover:text-white transition-colors"><Youtube className="w-[18px] h-[18px]" /></a>
-              <a href="#" className="hover:text-white transition-colors"><Instagram className="w-[18px] h-[18px]" /></a>
+            
+            {/* User Auth Link */}
+            <div className="border-l border-white/20 pl-5">
+              {user && profile && profile.role !== 'reader' ? (
+                <Link to="/admin" className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-full transition-all group">
+                  <User className="w-4 h-4 text-white group-hover:text-white" />
+                  <span className="text-[12px] font-bold uppercase tracking-wider text-white">Painel</span>
+                </Link>
+              ) : (
+                <Link to="/admin/login" className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-full transition-all group">
+                  <User className="w-4 h-4 text-white group-hover:text-white" />
+                  <span className="text-[12px] font-bold uppercase tracking-wider text-white">Entrar</span>
+                </Link>
+              )}
             </div>
+
             <div className="border-l border-white/20 pl-5">
               <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#004A81] hover:bg-[#003966] transition-colors">
                 <Moon className="w-4 h-4 text-white" />

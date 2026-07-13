@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@500;700;800&display=swap');
 @import "tailwindcss";
+@import "react-quill-new/dist/quill.snow.css";
 
 @theme {
   --color-brand-primary: #0F172A;

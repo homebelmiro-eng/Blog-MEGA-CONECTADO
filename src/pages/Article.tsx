@@ -1,34 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, BookOpen, X } from 'lucide-react';
+import { ArrowLeft, BookOpen, X, Eye, Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Link as LinkIcon, MessageSquare } from 'lucide-react';
+import { articleService } from '../lib/services';
+import { isFirebaseConfigured } from '../lib/firebase';
+import { formatDate } from '../lib/utils';
 import Sidebar from '../components/Sidebar';
 import AdSpace from '../components/AdSpace';
 import SEO from '../components/SEO';
 import TableOfContents from '../components/TableOfContents';
 import FAQ from '../components/FAQ';
+import RelatedArticles from '../components/RelatedArticles';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 import { Article as ArticleType } from '../types';
 
 export default function Article() {
-  const { id } = useParams<{ id: string }>();
+  const { slugOrId } = useParams<{ slugOrId: string }>();
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [isReaderMode, setIsReaderMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Busca o artigo nos diferentes arrays do mock de dados
-    const allArticles = [
-      heroArticle,
-      ...heroSideArticles,
-      ...topNewsArticles,
-      ...latestArticles
-    ];
-    
-    const foundArticle = allArticles.find(a => a.id === id);
-    setArticle(foundArticle || null);
-    
-    // Scroll to top
+    async function loadArticle() {
+      if (!slugOrId) return;
+      setLoading(true);
+      
+      const fallbackToStatic = () => {
+        const allArticles = [
+          heroArticle,
+          ...heroSideArticles,
+          ...topNewsArticles,
+          ...latestArticles
+        ];
+        const foundArticle = allArticles.find(a => a.id === slugOrId || a.slug === slugOrId);
+        setArticle(foundArticle || null);
+      };
+
+      try {
+        if (isFirebaseConfigured) {
+          // Try fetching by slug first
+          let dbArticle = await articleService.getArticleBySlug(slugOrId);
+          
+          // If not found by slug, try by ID
+          if (!dbArticle) {
+            dbArticle = await articleService.getArticleById(slugOrId);
+          }
+
+          if (dbArticle) {
+            setArticle(dbArticle);
+            // Track view using the internal ID
+            articleService.trackView(dbArticle.id);
+          } else {
+            fallbackToStatic();
+          }
+        } else {
+          fallbackToStatic();
+        }
+      } catch (error) {
+        console.error('Error loading article from Firestore:', error);
+        fallbackToStatic();
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadArticle();
     window.scrollTo(0, 0);
-  }, [id]);
+  }, [slugOrId]);
 
   // Toggle body class for reader mode
   useEffect(() => {
@@ -41,6 +78,17 @@ export default function Article() {
       document.body.classList.remove('reader-mode-active');
     };
   }, [isReaderMode]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-brand-secondary border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-slate-500 font-medium">Carregando conteúdo...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -60,11 +108,22 @@ export default function Article() {
         <h1 className="font-heading font-extrabold text-3xl md:text-5xl text-brand-primary tracking-tight leading-tight mb-4">
           {article.title}
         </h1>
-        <div className="flex items-center justify-between text-sm font-sans text-slate-500">
-          <div>
-            <span>Por: {article.author || 'Equipe Editorial'}</span>
-            <span className="mx-2">•</span>
-            <span>{article.date}</span>
+        <div className="flex flex-wrap items-center justify-between gap-4 text-sm font-sans text-slate-500">
+          <div className="flex items-center flex-wrap gap-x-4 gap-y-2">
+            <span className="flex items-center gap-1">
+              <User className="w-4 h-4" />
+              {article.author || 'Equipe Editorial'}
+            </span>
+            <span className="flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              {formatDate(article.date)}
+            </span>
+            {article.views !== undefined && (
+              <span className="flex items-center gap-1 text-brand-secondary font-bold">
+                <Eye className="w-4 h-4" />
+                {article.views.toLocaleString()} visualizações
+              </span>
+            )}
           </div>
           <button 
             onClick={() => setIsReaderMode(!isReaderMode)}
@@ -162,6 +221,8 @@ export default function Article() {
                {renderContent()}
              </div>
            </article>
+
+           <RelatedArticles currentCategory={article.category} currentArticleId={article.id} />
         </main>
         <aside className="lg:col-span-4 flex flex-col gap-8">
           <AdSpace format="vertical" />

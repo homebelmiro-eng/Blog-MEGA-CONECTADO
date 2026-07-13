@@ -12,6 +12,25 @@ async function startServer() {
   app.use(express.json());
 
   // API Routes
+  app.post('/api/admin/gemini', async (req, res) => {
+    try {
+      const { prompt } = req.body;
+      if (!prompt) {
+        return res.status(400).json({ error: 'O prompt é obrigatório.' });
+      }
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.5-flash',
+        contents: prompt,
+      });
+
+      res.json({ text: response.text });
+    } catch (error) {
+      console.error('Error in admin gemini API:', error);
+      res.status(500).json({ error: 'Erro ao processar com IA.' });
+    }
+  });
+
   app.post('/api/generate-meta', async (req, res) => {
     try {
       const { content, keywords } = req.body;
