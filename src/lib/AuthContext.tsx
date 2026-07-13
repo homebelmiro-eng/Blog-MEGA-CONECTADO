@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { getFirebaseAuth, getDb } from './firebase';
+import { getFirebaseAuth, getDb, handleFirestoreError, OperationType } from './firebase';
 
 interface UserProfile {
   uid: string;
@@ -36,32 +36,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
-        const docRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(docRef);
+        const path = `users/${user.uid}`;
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const data = docSnap.data() as UserProfile;
-          // Force admin role for the specific user email if they are currently a reader
-          if (user.email === 'homebelmiro@gmail.com' && data.role === 'reader') {
-            const updatedProfile = { ...data, role: 'admin' as const };
-            await setDoc(docRef, updatedProfile);
-            setProfile(updatedProfile);
+          if (docSnap.exists()) {
+            const data = docSnap.data() as UserProfile;
+            // Force admin role for the specific user email if they are currently a reader
+            if (user.email === 'homebelmiro@gmail.com' && data.role === 'reader') {
+              const updatedProfile = { ...data, role: 'admin' as const };
+              await setDoc(docRef, updatedProfile);
+              setProfile(updatedProfile);
+            } else {
+              setProfile(data);
+            }
           } else {
-            setProfile(data);
+            // Grant admin role to the specific user email
+            const isAdminEmail = user.email === 'homebelmiro@gmail.com';
+            
+            const newProfile: UserProfile = {
+              uid: user.uid,
+              email: user.email || '',
+              displayName: user.displayName || '',
+              photoURL: user.photoURL || '',
+              role: isAdminEmail ? 'admin' : 'reader'
+            };
+            await setDoc(docRef, newProfile);
+            setProfile(newProfile);
           }
-        } else {
-          // Grant admin role to the specific user email
-          const isAdminEmail = user.email === 'homebelmiro@gmail.com';
-          
-          const newProfile: UserProfile = {
-            uid: user.uid,
-            email: user.email || '',
-            displayName: user.displayName || '',
-            photoURL: user.photoURL || '',
-            role: isAdminEmail ? 'admin' : 'reader'
-          };
-          await setDoc(docRef, newProfile);
-          setProfile(newProfile);
+        } catch (error) {
+          handleFirestoreError(error, OperationType.WRITE, path);
         }
       } else {
         setProfile(null);

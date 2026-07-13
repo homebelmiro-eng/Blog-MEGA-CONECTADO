@@ -9,7 +9,7 @@ import {
   doc, 
   where 
 } from 'firebase/firestore';
-import { getDb } from '../lib/firebase';
+import { getDb, handleFirestoreError, OperationType } from '../lib/firebase';
 import { Article } from '../types';
 import { formatDate } from '../lib/utils';
 import { 
@@ -46,6 +46,8 @@ export default function AdminArticleList() {
       })) as Article[];
       setArticles(data);
       setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'articles');
     });
 
     return () => unsubscribe();
@@ -58,6 +60,7 @@ export default function AdminArticleList() {
         toast.success('Artigo excluído com sucesso');
       } catch (error) {
         toast.error('Erro ao excluir artigo');
+        handleFirestoreError(error, OperationType.DELETE, `articles/${id}`);
       }
     }
   };

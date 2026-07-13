@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { collection, query, orderBy, limit, onSnapshot, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { getDb } from '../lib/firebase';
+import { getDb, handleFirestoreError, OperationType } from '../lib/firebase';
 import { Article } from '../types';
 import { 
   BarChart, 
@@ -37,16 +37,20 @@ export default function AdminDashboard() {
     
     // Stats Fetching
     const fetchStats = async () => {
-      const articlesSnap = await getDocs(collection(db, 'articles'));
-      const categoriesSnap = await getDocs(collection(db, 'categories'));
-      
-      const allArticles = articlesSnap.docs.map(d => d.data() as Article);
-      setStats({
-        total: allArticles.length,
-        published: allArticles.filter(a => a.status === 'published').length,
-        drafts: allArticles.filter(a => a.status === 'draft').length,
-        categories: categoriesSnap.size || 4 // Fallback if none created yet
-      });
+      try {
+        const articlesSnap = await getDocs(collection(db, 'articles'));
+        const categoriesSnap = await getDocs(collection(db, 'categories'));
+        
+        const allArticles = articlesSnap.docs.map(d => d.data() as Article);
+        setStats({
+          total: allArticles.length,
+          published: allArticles.filter(a => a.status === 'published').length,
+          drafts: allArticles.filter(a => a.status === 'draft').length,
+          categories: categoriesSnap.size || 4 // Fallback if none created yet
+        });
+      } catch (error) {
+        handleFirestoreError(error, OperationType.LIST, 'articles');
+      }
     };
 
     fetchStats();
@@ -59,6 +63,8 @@ export default function AdminDashboard() {
         ...doc.data()
       })) as Article[];
       setArticles(data);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'articles');
     });
 
     return () => unsubscribe();
@@ -138,6 +144,8 @@ export default function AdminDashboard() {
             
           await updateDoc(doc(db, 'articles', articleDoc.id), {
             slug: generatedSlug
+          }).catch((error) => {
+            handleFirestoreError(error, OperationType.UPDATE, `articles/${articleDoc.id}`);
           });
           count++;
         }
@@ -146,6 +154,7 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error(error);
       toast.error('Erro ao migrar artigos.');
+      handleFirestoreError(error, OperationType.LIST, 'articles');
     } finally {
       setIsMigrating(false);
     }

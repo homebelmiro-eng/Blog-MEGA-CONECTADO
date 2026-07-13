@@ -20,7 +20,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { doc, getDoc, setDoc, collection, addDoc, Timestamp } from 'firebase/firestore';
-import { getDb } from '../lib/firebase';
+import { getDb, handleFirestoreError, OperationType } from '../lib/firebase';
 import { uploadImage } from '../lib/storage';
 import { geminiService } from '../lib/gemini';
 import toast from 'react-hot-toast';
@@ -145,6 +145,7 @@ export default function AdminArticleEditor() {
       }
     } catch (error) {
       toast.error('Erro ao carregar artigo');
+      handleFirestoreError(error, OperationType.GET, `articles/${articleId}`);
     } finally {
       setLoading(false);
     }
@@ -234,11 +235,21 @@ export default function AdminArticleEditor() {
       };
 
       if (id && id !== 'novo') {
-        await setDoc(doc(db, 'articles', id), articleData, { merge: true });
-        toast.success('Artigo atualizado!');
+        try {
+          await setDoc(doc(db, 'articles', id), articleData, { merge: true });
+          toast.success('Artigo atualizado!');
+        } catch (error) {
+          handleFirestoreError(error, OperationType.UPDATE, `articles/${id}`);
+          throw error;
+        }
       } else {
-        await addDoc(collection(db, 'articles'), { ...articleData, views: 0 });
-        toast.success('Artigo criado!');
+        try {
+          await addDoc(collection(db, 'articles'), { ...articleData, views: 0 });
+          toast.success('Artigo criado!');
+        } catch (error) {
+          handleFirestoreError(error, OperationType.CREATE, 'articles');
+          throw error;
+        }
       }
       navigate('/admin/artigos');
     } catch (error) {
