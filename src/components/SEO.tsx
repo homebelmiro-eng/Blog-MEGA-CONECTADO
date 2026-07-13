@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Timestamp } from 'firebase/firestore';
 
 interface SEOProps {
   title?: string;
@@ -8,7 +9,7 @@ interface SEOProps {
   type?: 'website' | 'article';
   image?: string;
   authorName?: string;
-  publishDate?: string;
+  publishDate?: any;
   // GEO Schema fields
   geoEnabled?: boolean;
   locationName?: string;
@@ -35,15 +36,37 @@ export default function SEO({
     ? title 
     : `${title} | MegaConectado`;
 
-  // Structured Data (JSON-LD) for GEO (Generative Engine Optimization)
-  const baseSchema = {
+  // Format publishDate into ISO string for robust Schema.org Article requirements
+  let isoDateString = '';
+  if (publishDate) {
+    if (publishDate instanceof Timestamp) {
+      isoDateString = publishDate.toDate().toISOString();
+    } else if (typeof publishDate === 'object' && publishDate !== null && 'seconds' in publishDate) {
+      try {
+        const ts = new Timestamp((publishDate as any).seconds, (publishDate as any).nanoseconds || 0);
+        isoDateString = ts.toDate().toISOString();
+      } catch (e) {
+        console.error('Error parsing timestamp object in SEO:', e);
+      }
+    } else if (publishDate instanceof Date) {
+      isoDateString = publishDate.toISOString();
+    } else if (typeof publishDate === 'string' || typeof publishDate === 'number') {
+      const d = new Date(publishDate);
+      if (!isNaN(d.getTime())) {
+        isoDateString = d.toISOString();
+      }
+    }
+  }
+
+  // Structured Data (JSON-LD) for GEO (Generative Engine Optimization) & SEO
+  const baseSchema: any = {
     "@context": "https://schema.org",
     "@type": type === 'article' ? "NewsArticle" : "WebPage",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": canonicalUrl
     },
-    "headline": siteTitle,
+    "headline": title === 'MegaConectado | Inteligência Artificial, Tecnologia e SEO' ? title : title,
     "image": [image],
     "author": {
       "@type": "Person",
@@ -94,13 +117,13 @@ export default function SEO({
 
   // Add GEO data if enabled
   if (geoEnabled && locationName) {
-    (baseSchema as any).contentLocation = {
+    baseSchema.contentLocation = {
       "@type": "Place",
       "name": locationName
     };
     
     if (latitude && longitude) {
-      (baseSchema as any).contentLocation.geo = {
+      baseSchema.contentLocation.geo = {
         "@type": "GeoCoordinates",
         "latitude": latitude,
         "longitude": longitude
@@ -108,9 +131,9 @@ export default function SEO({
     }
   }
 
-  if (type === 'article' && publishDate) {
-    (baseSchema as any).datePublished = publishDate;
-    (baseSchema as any).dateModified = publishDate;
+  if (type === 'article' && isoDateString) {
+    baseSchema.datePublished = isoDateString;
+    baseSchema.dateModified = isoDateString;
   }
 
   // Generate FAQ Schema if FAQs are provided

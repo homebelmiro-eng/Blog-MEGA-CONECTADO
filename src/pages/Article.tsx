@@ -404,6 +404,8 @@ Estar preparado para essas mudanças é o que diferenciará os líderes dos segu
         image={article.imageUrl}
         type="article"
         publishDate={article.date}
+        canonicalUrl={`https://megaconectado.com.br/artigo/${article.slug || article.id}`}
+        authorName={article.author || 'Divino Luciano Belmiro'}
         geoEnabled={article.geoEnabled}
         locationName={article.locationName}
         latitude={article.latitude}
