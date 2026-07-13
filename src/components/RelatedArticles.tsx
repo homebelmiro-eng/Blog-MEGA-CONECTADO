@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 import { Article } from '../types';
 import { getArticleUrl } from '../lib/navigation';
+import { articleService } from '../lib/services';
+import { isFirebaseConfigured } from '../lib/firebase';
 
 interface RelatedArticlesProps {
   currentCategory: string;
@@ -11,19 +13,41 @@ interface RelatedArticlesProps {
 }
 
 export default function RelatedArticles({ currentCategory, currentArticleId }: RelatedArticlesProps) {
-  // Combine all articles and filter by category, excluding the current one
-  const allArticles: Article[] = [
-    heroArticle,
-    ...heroSideArticles,
-    ...topNewsArticles,
-    ...latestArticles
-  ];
+  const [related, setRelated] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const related = allArticles
-    .filter(article => article.category === currentCategory && article.id !== currentArticleId)
-    .slice(0, 3);
+  useEffect(() => {
+    async function fetchRelated() {
+      try {
+        if (isFirebaseConfigured) {
+          const articles = await articleService.getRelatedArticles(currentCategory, currentArticleId);
+          setRelated(articles);
+        } else {
+          // Fallback to static data
+          const allArticles: Article[] = [
+            heroArticle,
+            ...heroSideArticles,
+            ...topNewsArticles,
+            ...latestArticles
+          ];
+          
+          const filtered = allArticles
+            .filter(article => article.category === currentCategory && article.id !== currentArticleId)
+            .slice(0, 3);
+            
+          setRelated(filtered);
+        }
+      } catch (error) {
+        console.error('Error fetching related articles:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchRelated();
+  }, [currentCategory, currentArticleId]);
 
-  if (related.length === 0) return null;
+  if (loading || related.length === 0) return null;
 
   return (
     <section className="mt-12 border-t border-slate-200 pt-12">

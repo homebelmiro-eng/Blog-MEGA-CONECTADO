@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.snow.css';
+import SimpleMdeReact from 'react-simplemde-editor';
+import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -40,7 +40,7 @@ const articleSchema = z.object({
   locationName: z.string().optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
-  geoEnabled: z.boolean().default(false),
+  geoEnabled: z.boolean().optional(),
 });
 
 type ArticleFormValues = z.infer<typeof articleSchema>;
@@ -48,11 +48,25 @@ type ArticleFormValues = z.infer<typeof articleSchema>;
 export default function AdminArticleEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const quillRef = useRef<ReactQuill>(null);
   const [loading, setLoading] = useState(false);
   const [isAiProcessing, setIsAiProcessing] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [faqs, setFaqs] = useState<{question: string, answer: string}[]>([]);
+
+  useEffect(() => {
+    if (id === 'novo') {
+      setFaqs([
+        { question: 'O produto vale a pena?', answer: '' },
+        { question: 'Quem deve comprar?', answer: '' },
+        { question: 'Quais são os principais diferenciais?', answer: '' },
+        { question: 'Existe uma opção mais barata?', answer: '' },
+        { question: 'Qual possui melhor custo-benefício?', answer: '' },
+        { question: 'Qual é o mais indicado para iniciantes?', answer: '' },
+        { question: 'Qual apresenta melhor desempenho?', answer: '' },
+        { question: 'Onde comprar com segurança?', answer: '' }
+      ]);
+    }
+  }, [id]);
 
   const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
@@ -92,45 +106,6 @@ export default function AdminArticleEditor() {
     }
   }, [title, setValue, id]);
 
-  const imageHandler = useCallback(() => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-
-    input.onchange = async () => {
-      const file = input.files?.[0];
-      if (file) {
-        try {
-          const url = await uploadImage(file, 'articles_content');
-          const quill = quillRef.current?.getEditor();
-          if (quill) {
-            const range = quill.getSelection();
-            quill.insertEmbed(range?.index || 0, 'image', url);
-          }
-        } catch (error) {
-          toast.error('Erro ao carregar imagem no conteúdo');
-        }
-      }
-    };
-  }, []);
-
-  const modules = useMemo(() => ({
-    toolbar: {
-      container: [
-        [{ 'header': [1, 2, 3, false] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        ['link', 'image', 'video'],
-        ['clean']
-      ],
-      handlers: {
-        image: imageHandler
-      }
-    }
-  }), [imageHandler]);
-
   const addFaq = () => setFaqs([...faqs, { question: '', answer: '' }]);
   const removeFaq = (index: number) => setFaqs(faqs.filter((_, i) => i !== index));
   const updateFaq = (index: number, field: 'question' | 'answer', value: string) => {
@@ -152,7 +127,9 @@ export default function AdminArticleEditor() {
             setValue('metaTitle', value.title);
             setValue('metaDescription', value.description);
           } else if (key === 'tags') {
-            setValue('tags', (value as string[]).join(', '));
+            if (Array.isArray(value)) {
+              setValue('tags', value.join(', '));
+            }
           } else if (key === 'faq') {
             setFaqs(value as any[]);
           } else {
@@ -217,14 +194,19 @@ export default function AdminArticleEditor() {
     setLoading(true);
     try {
       const db = getDb();
+      
+      const cleanData = Object.fromEntries(
+        Object.entries(data).filter(([_, v]) => v !== undefined)
+      );
+
       const articleData = {
-        ...data,
+        ...cleanData,
         faq: faqs.filter(f => f.question && f.answer),
-        tags: data.tags?.split(',').map(t => t.trim()) || [],
+        tags: data.tags?.split(',').map(t => t.trim()).filter(Boolean) || [],
         seo: {
           title: data.metaTitle || data.title,
           description: data.metaDescription || data.excerpt,
-          keywords: data.tags?.split(',').map(t => t.trim()) || []
+          keywords: data.tags?.split(',').map(t => t.trim()).filter(Boolean) || []
         },
         date: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -239,6 +221,7 @@ export default function AdminArticleEditor() {
       }
       navigate('/admin/artigos');
     } catch (error) {
+      console.error("Erro ao salvar artigo:", error);
       toast.error('Erro ao salvar artigo');
     } finally {
       setLoading(false);
@@ -335,21 +318,20 @@ export default function AdminArticleEditor() {
               <Controller
                 name="content"
                 control={control}
-                render={({ field }) => {
-                  const Quill = ReactQuill as any;
-                  return (
-                    <div className="prose-editor">
-                      <Quill 
-                        ref={quillRef}
-                        theme="snow"
-                        value={field.value}
-                        onChange={field.onChange}
-                        modules={modules}
-                        className="h-[500px] mb-12"
-                      />
-                    </div>
-                  );
-                }}
+                render={({ field }) => (
+                  <div className="prose-editor max-w-none prose prose-slate">
+                    <SimpleMdeReact 
+                      value={field.value}
+                      onChange={field.onChange}
+                      options={{
+                        spellChecker: false,
+                        placeholder: "Escreva seu artigo usando Markdown...",
+                        status: false,
+                        hideIcons: ["guide", "fullscreen", "side-by-side"]
+                      }}
+                    />
+                  </div>
+                )}
               />
               {errors.content && <p className="text-red-500 text-xs mt-1 font-medium">{errors.content.message}</p>}
             </div>

@@ -5,7 +5,7 @@ import Sidebar from '../components/Sidebar';
 import SEO from '../components/SEO';
 import FAQ from '../components/FAQ';
 import { FAQItem } from '../types';
-import authorPortrait from '../assets/images/author_portrait_1783796349533.jpg';
+import authorPortrait from '../assets/images/divino_luciano_belmiro.jpg';
 
 export default function Page() {
   const { slug } = useParams<{ slug: string }>();
@@ -13,15 +13,34 @@ export default function Page() {
   // Default FAQs for institutional pages to improve GEO ranking
   const getPageFAQ = (slug: string | undefined): FAQItem[] => {
     switch (slug) {
+      case 'equipe':
       case 'sobre-o-autor':
         return [
           {
-            question: "Quem é Divino Luciano Belmiro?",
-            answer: "Divino Luciano Belmiro é Psicanalista Clínico e Terapeuta Integrativo, além de editor do portal Mega Conectado, focado em tecnologia e inovação."
+            question: "Quem faz parte da Equipe MegaConectado?",
+            answer: "Nossa equipe é formada por profissionais e colaboradores especializados em tecnologia, Inteligência Artificial, SEO e marketing digital."
           },
           {
-            question: "Como entrar em contato com o autor?",
-            answer: "Você pode entrar em contato através do e-mail contato@megaconectado.com.br ou pelo telefone +55 (43) 98439-0879."
+            question: "Como entrar em contato com a equipe?",
+            answer: "Você pode entrar em contato através do e-mail contato@megaconectado.com.br."
+          }
+        ];
+      case 'sobre':
+        return [
+          {
+            question: "O que é o MegaConectado?",
+            answer: "O MegaConectado é um portal especializado em Inteligência Artificial, tecnologia, SEO, marketing digital e produtividade."
+          },
+          {
+            question: "Como os conteúdos são produzidos?",
+            answer: "Todos os conteúdos são elaborados com base em pesquisas, documentação oficial, testes práticos e análise de fontes confiáveis."
+          }
+        ];
+      case 'metodologia-editorial':
+        return [
+          {
+            question: "Como os produtos são avaliados?",
+            answer: "Avaliamos desempenho, qualidade de construção, recursos disponíveis, facilidade de uso, custo-benefício, suporte e atualizações, reputação da marca e avaliações de usuários."
           }
         ];
       case 'privacidade':
@@ -54,34 +73,25 @@ export default function Page() {
   }, [slug]);
 
   const renderContent = () => {
-    if (slug === 'sobre-o-autor') {
+    if (slug === 'equipe' || slug === 'sobre-o-autor') {
       return (
         <div className="flex flex-col gap-10">
           <div className="relative group overflow-hidden rounded-2xl shadow-2xl h-[300px] md:h-[450px]">
             <img 
               src={authorPortrait} 
-              alt="Divino Luciano Belmiro" 
+              alt="Equipe MegaConectado" 
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/40 to-transparent" />
             <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
               <div className="flex flex-col gap-2">
-                <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-white tracking-tight">Divino Luciano Belmiro</h2>
-                <p className="text-lg md:text-2xl font-semibold text-brand-secondary">Psicanalista Clínico & Terapeuta Integrativo</p>
+                <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-white tracking-tight">Equipe MegaConectado</h2>
+                <p className="text-lg md:text-2xl font-semibold text-brand-secondary">Especialistas em Tecnologia & Inovação</p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:bg-white hover:border-brand-secondary/30 group">
-              <div className="p-3 bg-brand-secondary/10 rounded-lg text-brand-secondary group-hover:bg-brand-secondary group-hover:text-white transition-colors">
-                <Phone className="w-5 h-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Telefone</span>
-                <span className="font-bold text-brand-primary">+55 (43) 98439-0879</span>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:bg-white hover:border-brand-secondary/30 group">
               <div className="p-3 bg-brand-secondary/10 rounded-lg text-brand-secondary group-hover:bg-brand-secondary group-hover:text-white transition-colors">
                 <Mail className="w-5 h-5" />
@@ -97,7 +107,7 @@ export default function Page() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Localização</span>
-                <span className="font-bold text-brand-primary">Londrina, PR, Brasil</span>
+                <span className="font-bold text-brand-primary">Brasil</span>
               </div>
             </div>
           </div>
@@ -105,25 +115,62 @@ export default function Page() {
           <div className="prose prose-lg prose-slate max-w-none">
             <div className="flex items-center gap-4 mb-6">
               <div className="h-px flex-1 bg-slate-200"></div>
-              <h3 className="font-heading font-bold text-brand-primary m-0 uppercase tracking-[0.2em] text-sm">Biografia & Atuação</h3>
+              <h3 className="font-heading font-bold text-brand-primary m-0 uppercase tracking-[0.2em] text-sm">Nossa Equipe</h3>
               <div className="h-px flex-1 bg-slate-200"></div>
             </div>
             <p className="lead text-xl text-slate-600 font-medium">
-              Com uma abordagem que une a escuta analítica profunda e práticas integrativas de saúde, 
-              Divino Luciano Belmiro dedica-se a ajudar pessoas a ressignificarem suas dores e encontrarem equilíbrio emocional.
+              A Equipe MegaConectado é formada por profissionais e colaboradores especializados em tecnologia, Inteligência Artificial, SEO e marketing digital.
             </p>
             <p>
-              Sua jornada profissional é marcada pela busca constante por conhecimento e pela paixão 
-              em compreender a complexidade da mente humana. Como Psicanalista Clínico, utiliza ferramentas 
-              técnicas para explorar o inconsciente e promover o autoconhecimento.
-            </p>
-            <p>
-              Além de sua atuação clínica, é o editor-chefe do portal <strong>Mega Conectado</strong>, 
-              onde funde seu interesse por comportamento humano com a inovação tecnológica. No portal, 
-              ele analisa como a Inteligência Artificial e as transformações digitais impactam nossa 
-              psique e o tecido social, promovendo um debate humanizado sobre o futuro da tecnologia.
+              Nosso compromisso é produzir conteúdos confiáveis, atualizados e úteis, sempre baseados em fontes verificadas e nas melhores práticas do setor.
             </p>
           </div>
+        </div>
+      );
+    }
+    
+    if (slug === 'sobre') {
+      return (
+        <div className="prose prose-lg prose-slate max-w-none">
+          <h2>Quem somos</h2>
+          <p>
+            O MegaConectado é um portal especializado em Inteligência Artificial, tecnologia, SEO, marketing digital e produtividade. Nosso objetivo é produzir conteúdo confiável, atualizado e acessível para ajudar pessoas e empresas a tomar melhores decisões.
+          </p>
+          <p>
+            Publicamos tutoriais, análises, reviews, comparativos, guias de compra e notícias sobre as principais tendências do mercado digital.
+          </p>
+          <h2>Nossa missão</h2>
+          <p>
+            Nossa missão é transformar temas complexos em conteúdos claros, completos e úteis, facilitando o aprendizado e o uso de novas tecnologias por qualquer pessoa.
+          </p>
+          <h2>Como produzimos nossos conteúdos</h2>
+          <p>
+            Todos os conteúdos do MegaConectado são elaborados com base em pesquisas, documentação oficial, testes práticos quando possível e análise de fontes confiáveis. Nossos artigos passam por revisão editorial para garantir precisão, clareza e atualização constante.
+          </p>
+        </div>
+      );
+    }
+
+    if (slug === 'metodologia-editorial') {
+      return (
+        <div className="prose prose-lg prose-slate max-w-none">
+          <h2>Como avaliamos produtos</h2>
+          <p>
+            Os reviews e comparativos do MegaConectado seguem critérios objetivos, como:
+          </p>
+          <ul>
+            <li>desempenho;</li>
+            <li>qualidade de construção;</li>
+            <li>recursos disponíveis;</li>
+            <li>facilidade de uso;</li>
+            <li>custo-benefício;</li>
+            <li>suporte e atualizações;</li>
+            <li>reputação da marca;</li>
+            <li>avaliações de usuários.</li>
+          </ul>
+          <p>
+            Nosso objetivo é fornecer informações imparciais para auxiliar o leitor na escolha do produto mais adequado.
+          </p>
         </div>
       );
     }

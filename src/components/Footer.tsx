@@ -11,14 +11,13 @@ export default function Footer() {
   ];
 
   const bottomLinks = [
-    { name: 'Sobre Nós', path: '/pagina/sobre-nos' },
+    { name: 'Sobre Nós', path: '/pagina/sobre' },
     { name: 'Contato', path: '/contato' },
     { name: 'Política de Privacidade', path: '/pagina/privacidade' },
     { name: 'Termos de Uso', path: '/pagina/termos' },
     { name: 'Política de Cookies', path: '/pagina/politica-de-cookies' },
-    { name: 'Divulgação de Afiliados', path: '/pagina/divulgacao-de-afiliados' },
-    { name: 'Nossa Equipe', path: '/pagina/equipe-editorial' },
-    { name: 'Política Editorial', path: '/pagina/politica-editorial' }
+    { name: 'Nossa Equipe', path: '/pagina/equipe' },
+    { name: 'Metodologia Editorial', path: '/pagina/metodologia-editorial' }
   ];
 
   return (

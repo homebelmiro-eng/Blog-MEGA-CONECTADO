@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@500;700;800&display=swap');
 @import "tailwindcss";
-@import "react-quill-new/dist/quill.snow.css";
 
 @theme {
   --color-brand-primary: #0F172A;
@@ -17,4 +16,56 @@ body {
 }
 body.reader-mode-active {
   overflow: hidden;
+}
+
+/* Estilos avançados para o editor Markdown (CodeMirror) */
+.CodeMirror {
+  @apply font-sans text-lg bg-slate-50 border-slate-200 rounded-xl shadow-inner;
+}
+
+.CodeMirror .cm-header-2 {
+  @apply text-2xl font-heading font-extrabold text-brand-primary pl-4 border-l-4 border-brand-secondary inline-block mt-4 mb-2;
+}
+
+.CodeMirror .cm-header-3 {
+  @apply text-xl font-heading font-bold text-slate-800 pl-3 border-l-4 border-brand-tertiary inline-block mt-3 mb-1;
+}
+
+.CodeMirror .cm-link, 
+.CodeMirror .cm-url {
+  @apply text-brand-secondary font-medium bg-brand-secondary/10 px-1 rounded-md;
+}
+
+.CodeMirror .cm-image,
+.CodeMirror .cm-image-marker {
+  @apply text-brand-primary font-mono text-sm bg-slate-200 px-1 rounded-md shadow-sm border border-slate-300;
+}
+
+/* Estilos avançados para o Preview do Editor */
+.editor-preview, .editor-preview-side {
+  @apply bg-white p-8;
+}
+
+.editor-preview h2, .editor-preview-side h2 {
+  @apply text-3xl md:text-4xl font-heading font-extrabold text-brand-primary mt-14 mb-8 pb-4 border-b-2 border-slate-100 flex items-center gap-3 relative;
+}
+.editor-preview h2::before, .editor-preview-side h2::before {
+  content: '';
+  @apply absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-8 bg-brand-secondary rounded-full hidden md:block;
+}
+
+.editor-preview h3, .editor-preview-side h3 {
+  @apply text-2xl md:text-3xl font-heading font-bold text-slate-800 mt-10 mb-6 flex items-center gap-3;
+}
+.editor-preview h3::before, .editor-preview-side h3::before {
+  content: '';
+  @apply w-2 h-6 bg-brand-tertiary rounded-full block;
+}
+
+.editor-preview a, .editor-preview-side a {
+  @apply inline-flex items-center gap-1.5 font-bold text-brand-primary hover:text-white bg-brand-secondary/10 hover:bg-brand-secondary px-2 py-1 rounded-md transition-all border border-brand-secondary/20 shadow-sm no-underline;
+}
+
+.editor-preview img, .editor-preview-side img {
+  @apply block my-10 relative rounded-2xl shadow-xl border-4 border-white ring-1 ring-slate-200 transition-transform duration-700 hover:scale-[1.02] w-full h-auto object-cover;
 }

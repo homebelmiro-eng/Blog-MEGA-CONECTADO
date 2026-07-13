@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, Phone } from 'lucide-react';
-import authorPortrait from '../assets/images/author_portrait_1783796349533.jpg';
+import authorPortrait from '../assets/images/divino_luciano_belmiro.jpg';
 
 export default function AuthorProfile() {
   return (

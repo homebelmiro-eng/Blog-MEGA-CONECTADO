@@ -41,6 +41,24 @@ export const articleService = {
     return null;
   },
 
+  // Fetch related articles
+  async getRelatedArticles(category: string, excludeId: string, limitCount: number = 3): Promise<Article[]> {
+    const db = getDb();
+    const q = query(
+      collection(db, ARTICLES_COLLECTION),
+      where('category', '==', category),
+      orderBy('date', 'desc'),
+      limit(limitCount + 1) // Fetch one extra in case excludeId is in the results
+    );
+    const querySnapshot = await getDocs(q);
+    const results = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Article[];
+    
+    return results.filter(a => a.id !== excludeId).slice(0, limitCount);
+  },
+
   // Track article view
   async trackView(id: string) {
     const db = getDb();
