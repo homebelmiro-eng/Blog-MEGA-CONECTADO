@@ -2,7 +2,20 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { initializeFirestore, getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
-import firebaseConfig from '../../firebase-applet-config.json';
+
+const envConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || '(default)'
+};
+
+// @ts-ignore
+const localConfig = typeof __FIREBASE_CONFIG__ !== 'undefined' ? __FIREBASE_CONFIG__ : {};
+const firebaseConfig = localConfig.apiKey ? localConfig : envConfig;
 
 // Check if Firebase is configured
 export const isFirebaseConfigured = !!firebaseConfig.apiKey;
