@@ -96,8 +96,10 @@ export default function AdminArticleEditor() {
   }, [id]);
 
   useEffect(() => {
-    if (title && !id) {
+    if (title && id === 'novo') {
       const slug = title
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase()
         .replace(/[^\w\s-]/g, '')
         .replace(/[\s_-]+/g, '-')
@@ -185,6 +187,22 @@ export default function AdminArticleEditor() {
       }
     } catch (error) {
       toast.error('Erro ao gerar SEO');
+    } finally {
+      setIsAiProcessing(false);
+    }
+  };
+
+  const handleGeminiSlug = async () => {
+    if (!title) return toast.error('O título é necessário para gerar um slug');
+    setIsAiProcessing(true);
+    try {
+      const slug = await geminiService.generateSeoSlug(title);
+      if (slug) {
+        setValue('slug', slug, { shouldValidate: true, shouldDirty: true });
+        toast.success('Slug otimizado pela IA!');
+      }
+    } catch (error) {
+      toast.error('Erro ao gerar slug otimizado');
     } finally {
       setIsAiProcessing(false);
     }
@@ -288,7 +306,18 @@ export default function AdminArticleEditor() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Slug (URL)</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm font-bold text-slate-700">Slug (URL)</label>
+                  <button
+                    type="button"
+                    onClick={handleGeminiSlug}
+                    disabled={isAiProcessing || !title}
+                    className="flex items-center gap-1.5 text-[10px] font-bold text-brand-secondary bg-brand-secondary/10 px-2.5 py-1 rounded-full hover:bg-brand-secondary hover:text-white transition-all disabled:opacity-50 uppercase tracking-wider"
+                  >
+                    {isAiProcessing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                    Otimizar com IA
+                  </button>
+                </div>
                 <Controller
                   name="slug"
                   control={control}

@@ -23,6 +23,7 @@ export const geminiService = {
   async generateSEO(title: string, content: string) {
     const prompt = `Com base no título "${title}" e no conteúdo resumido "${content.substring(0, 500)}", gere um JSON com os seguintes campos: metaTitle, metaDescription (máximo 160 caracteres) e keywords (array de strings). Retorne apenas o JSON puro, sem formatação markdown:\n\n`;
     const response = await this.generateContent(prompt);
+    
     try {
       // Cleanup common markdown artifact from AI response
       const cleanJson = response.replace(/```json|```/g, '').trim();
@@ -31,5 +32,11 @@ export const geminiService = {
       console.error("Erro ao analisar JSON da IA", e);
       return null;
     }
+  },
+
+  async generateSeoSlug(title: string) {
+    const prompt = `Crie um slug otimizado para SEO, curto e direto (apenas palavras-chave essenciais, sem stop words, separado por hífens, minúsculo, sem acentos) para o seguinte título de artigo: "${title}". Retorne APENAS o slug. Ex: inteligencia-artificial-saude`;
+    const response = await this.generateContent(prompt);
+    return response.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]/g, '').replace(/^-+|-+$/g, '');
   }
 };
