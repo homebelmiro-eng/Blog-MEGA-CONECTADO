@@ -25,6 +25,8 @@ import { uploadImage } from '../lib/storage';
 import { geminiService } from '../lib/gemini';
 import toast from 'react-hot-toast';
 import { generateSlug } from '../lib/utils';
+import { analyzeSEO } from '../lib/seo-utils';
+import { SEOAnalysisPanel } from '../components/SEOAnalysisPanel';
 
 const articleSchema = z.object({
   title: z.string().min(5, 'Título deve ter pelo menos 5 caracteres'),
@@ -89,6 +91,13 @@ export default function AdminArticleEditor() {
 
   const title = watch('title');
   const content = watch('content');
+  const slug = watch('slug');
+  const metaDescription = watch('metaDescription');
+  const tags = watch('tags');
+
+  const seoAnalysis = useMemo(() => {
+    return analyzeSEO(title || '', content || '', slug || '', metaDescription || '', tags || '');
+  }, [title, content, slug, metaDescription, tags]);
 
   useEffect(() => {
     if (id && id !== 'novo') {
@@ -529,6 +538,7 @@ export default function AdminArticleEditor() {
           </div>
 
           <div className="space-y-6">
+            <SEOAnalysisPanel analysis={seoAnalysis} />
             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
               <h3 className="font-bold text-slate-800 flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-brand-secondary" />
