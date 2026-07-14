@@ -171,18 +171,20 @@ async function startServer() {
       let loadedFromFirestore = false;
 
       try {
-        const { getDb } = await import('./src/lib/firebase.ts');
-        const { collection, getDocs, query, orderBy } = await import('firebase/firestore');
-        const db = getDb();
-        const q = query(collection(db, 'articles'), orderBy('date', 'desc'));
-        const querySnapshot = await getDocs(q);
-        
-        if (!querySnapshot.empty) {
-          allArticles = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-          loadedFromFirestore = true;
+        const { getDb, isFirebaseConfigured } = await import('./src/lib/firebase.ts');
+        if (isFirebaseConfigured) {
+          const { collection, getDocs, query, orderBy } = await import('firebase/firestore');
+          const db = getDb();
+          const q = query(collection(db, 'articles'), orderBy('date', 'desc'));
+          const querySnapshot = await getDocs(q);
+          
+          if (!querySnapshot.empty) {
+            allArticles = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+            loadedFromFirestore = true;
+          }
         }
       } catch (e) {
         console.warn('Could not fetch articles from Firestore for sitemap, falling back to static data:', e);
@@ -212,12 +214,14 @@ async function startServer() {
       // 2. Fetch Categories (Dynamic from Firestore with static fallback)
       let categories: string[] = [];
       try {
-        const { getDb } = await import('./src/lib/firebase.ts');
-        const { collection, getDocs } = await import('firebase/firestore');
-        const db = getDb();
-        const categoriesSnap = await getDocs(collection(db, 'categories'));
-        if (!categoriesSnap.empty) {
-          categories = categoriesSnap.docs.map(doc => doc.data().slug || doc.id);
+        const { getDb, isFirebaseConfigured } = await import('./src/lib/firebase.ts');
+        if (isFirebaseConfigured) {
+          const { collection, getDocs } = await import('firebase/firestore');
+          const db = getDb();
+          const categoriesSnap = await getDocs(collection(db, 'categories'));
+          if (!categoriesSnap.empty) {
+            categories = categoriesSnap.docs.map(doc => doc.data().slug || doc.id);
+          }
         }
       } catch (e) {
         console.warn('Could not fetch categories from Firestore for sitemap, using static fallback:', e);
@@ -244,12 +248,14 @@ async function startServer() {
       // 3. Fetch Institutional Pages (Dynamic check with static fallback)
       let pages: string[] = [];
       try {
-        const { getDb } = await import('./src/lib/firebase.ts');
-        const { collection, getDocs } = await import('firebase/firestore');
-        const db = getDb();
-        const pagesSnap = await getDocs(collection(db, 'pages'));
-        if (!pagesSnap.empty) {
-          pages = pagesSnap.docs.map(doc => doc.data().slug || doc.id);
+        const { getDb, isFirebaseConfigured } = await import('./src/lib/firebase.ts');
+        if (isFirebaseConfigured) {
+          const { collection, getDocs } = await import('firebase/firestore');
+          const db = getDb();
+          const pagesSnap = await getDocs(collection(db, 'pages'));
+          if (!pagesSnap.empty) {
+            pages = pagesSnap.docs.map(doc => doc.data().slug || doc.id);
+          }
         }
       } catch (e) {
         // Fallback or page collection does not exist
