@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Zap, ArrowRight } from 'lucide-react';
 import { topNewsArticles } from '../data';
-
 import { getArticleUrl } from '../lib/navigation';
+import OptimizedImage from './OptimizedImage';
 
 export default function TopNews() {
   return (
@@ -18,10 +18,10 @@ export default function TopNews() {
             <article className="flex flex-col h-full bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-brand-secondary hover:shadow-sm transition-all duration-300">
               <div className="h-40 overflow-hidden relative">
                 {article.imageUrl && (
-                  <img 
+                  <OptimizedImage 
                     src={article.imageUrl} 
-                    alt={article.imageAlt} 
-                    loading="lazy"
+                    alt={article.imageAlt || article.title} 
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
                   />
                 )}

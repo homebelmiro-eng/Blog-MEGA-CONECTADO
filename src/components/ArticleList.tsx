@@ -6,6 +6,7 @@ import { latestArticles as staticArticles } from '../data';
 import { Article } from '../types';
 import { getArticleUrl } from '../lib/navigation';
 import { formatDate } from '../lib/utils';
+import OptimizedImage from './OptimizedImage';
 
 export default function ArticleList() {
   const [articles, setArticles] = useState<Article[]>(staticArticles);
@@ -39,10 +40,10 @@ export default function ArticleList() {
             <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-slate-100 last:border-0">
               <div className="md:w-2/5 h-48 rounded-xl overflow-hidden border border-slate-200 group-hover:border-brand-secondary transition-colors">
                 {article.imageUrl && (
-                  <img 
+                  <OptimizedImage 
                     src={article.imageUrl} 
-                    alt={article.imageAlt} 
-                    loading="lazy"
+                    alt={article.imageAlt || article.title} 
+                    sizes="(max-width: 768px) 100vw, 400px"
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
                   />
                 )}

@@ -6,6 +6,7 @@ import { heroArticle as staticHero, heroSideArticles as staticSides } from '../d
 import { Article } from '../types';
 import { getArticleUrl } from '../lib/navigation';
 import { formatDate } from '../lib/utils';
+import OptimizedImage from './OptimizedImage';
 
 export default function Hero() {
   const [hero, setHero] = useState<Article>(staticHero);
@@ -36,10 +37,11 @@ export default function Hero() {
         <article>
           <div className="relative overflow-hidden rounded-xl mb-4 h-[400px] border border-slate-200 group-hover:border-brand-secondary transition-colors duration-300">
             {hero.imageUrl && (
-              <img 
+              <OptimizedImage 
                 src={hero.imageUrl} 
-                alt={hero.imageAlt} 
-                fetchPriority="high"
+                alt={hero.imageAlt || hero.title} 
+                priority={true}
+                sizes="(max-width: 1024px) 100vw, 850px"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out" 
               />
             )}
@@ -70,9 +72,10 @@ export default function Hero() {
             <article className="flex gap-4">
               <div className="w-32 h-24 flex-shrink-0 rounded-lg overflow-hidden border border-slate-200 group-hover:border-brand-secondary transition-colors">
                 {article.imageUrl && (
-                  <img 
+                  <OptimizedImage 
                     src={article.imageUrl} 
-                    alt={article.imageAlt}
+                    alt={article.imageAlt || article.title}
+                    sizes="128px"
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" 
                   />
                 )}

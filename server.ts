@@ -80,7 +80,16 @@ async function startServer() {
     }
   });
 
+  // Simple memory cache for trending AI news to prevent slow pages and rate-limiting
+  let trendingCache: { data: any; timestamp: number } | null = null;
+  const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
+
   app.get('/api/trending-ai', async (req, res) => {
+    const now = Date.now();
+    if (trendingCache && (now - trendingCache.timestamp) < CACHE_DURATION) {
+      return res.json(trendingCache.data);
+    }
+
     try {
       const prompt = `Faça uma pesquisa rápida na web pelas 5 principais notícias de hoje sobre Inteligência Artificial, Tecnologia e Inovação. 
       Resuma cada uma delas de forma concisa em um parágrafo.
@@ -109,6 +118,7 @@ async function startServer() {
       });
 
       const result = JSON.parse(response.text || '[]');
+      trendingCache = { data: result, timestamp: now };
       res.json(result);
     } catch (error) {
       const fallbackData = [

@@ -6,6 +6,7 @@ import { Article } from '../types';
 import { getArticleUrl } from '../lib/navigation';
 import { articleService } from '../lib/services';
 import { isFirebaseConfigured } from '../lib/firebase';
+import OptimizedImage from './OptimizedImage';
 
 interface RelatedArticlesProps {
   currentCategory: string;
@@ -75,9 +76,10 @@ export default function RelatedArticles({ currentCategory, currentArticleId }: R
               <div className="bg-white rounded-xl border border-slate-200 overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:border-brand-secondary/30">
                 <div className="aspect-video relative overflow-hidden">
                   {article.imageUrl && (
-                    <img 
+                    <OptimizedImage 
                       src={article.imageUrl} 
-                      alt={article.imageAlt}
+                      alt={article.imageAlt || article.title}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 350px"
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   )}

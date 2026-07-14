@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 import { Article } from '../types';
 import { getArticleUrl } from '../lib/navigation';
+import OptimizedImage from './OptimizedImage';
 
 export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [query, setQuery] = useState('');
@@ -106,7 +107,12 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
                   >
                     {article.imageUrl && (
                       <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden hidden sm:block">
-                        <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <OptimizedImage 
+                          src={article.imageUrl} 
+                          alt={article.title} 
+                          sizes="96px"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                        />
                       </div>
                     )}
                     <div className="flex flex-col justify-center">

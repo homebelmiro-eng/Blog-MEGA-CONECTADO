@@ -16,6 +16,7 @@ import TableOfContents from '../components/TableOfContents';
 import ReadingTime from '../components/ReadingTime';
 import FAQ from '../components/FAQ';
 import RelatedArticles from '../components/RelatedArticles';
+import OptimizedImage from '../components/OptimizedImage';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 import { Article as ArticleType } from '../types';
 import authorPortrait from '../assets/images/divino_luciano_belmiro.jpg';
@@ -267,9 +268,11 @@ export default function Article() {
       {article.imageUrl && (
         <figure className="space-y-3 -mx-4 md:-mx-12 lg:-mx-16">
           <div className="aspect-video w-full overflow-hidden shadow-2xl">
-            <img 
+            <OptimizedImage 
               src={article.imageUrl} 
               alt={article.imageAlt || article.title} 
+              priority={true}
+              sizes="(max-width: 1024px) 100vw, 1000px"
               className="w-full h-full object-cover" 
             />
           </div>
@@ -313,9 +316,9 @@ export default function Article() {
                   </a>
                 );
               },
-              img: ({node, alt, ...props}) => (
+              img: ({node, alt, src, ...props}) => (
                 <span className="block my-10 relative group rounded-2xl overflow-hidden shadow-xl border-4 border-white ring-1 ring-slate-200">
-                  <img className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt={alt} {...props} />
+                  <OptimizedImage src={src || ''} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" alt={alt} {...props} />
                   {alt && (
                     <span className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       {alt}
