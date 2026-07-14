@@ -13,6 +13,7 @@ import Sidebar from '../components/Sidebar';
 import AdSpace from '../components/AdSpace';
 import SEO from '../components/SEO';
 import TableOfContents from '../components/TableOfContents';
+import ReadingTime from '../components/ReadingTime';
 import FAQ from '../components/FAQ';
 import RelatedArticles from '../components/RelatedArticles';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
@@ -190,6 +191,8 @@ export default function Article() {
             {article.title}
           </h1>
           
+          <ReadingTime content={article.content} className="mb-6" />
+          
           <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 md:p-8 my-8 shadow-sm">
             <h2 className="font-heading text-2xl font-bold text-brand-primary mb-4">Resposta rápida</h2>
             <p className="text-slate-700 font-medium text-lg leading-relaxed">
@@ -279,7 +282,7 @@ export default function Article() {
       )}
 
       <div className="article-body">
-        <TableOfContents />
+        <TableOfContents content={article.content} />
         
         <div className="prose prose-lg prose-slate max-w-none prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight prose-a:text-brand-secondary hover:prose-a:text-brand-primary prose-img:rounded-2xl">
           <ReactMarkdown
@@ -287,10 +290,10 @@ export default function Article() {
             rehypePlugins={[rehypeRaw, rehypeSlug]}
             components={{
               h2: ({node, ...props}) => (
-                <h2 className="text-3xl md:text-4xl font-heading font-extrabold text-brand-primary mt-14 mb-8 pb-4 border-b-2 border-slate-100 flex items-center gap-3 relative before:content-[''] before:absolute before:-left-6 before:top-1/2 before:-translate-y-1/2 before:w-2 before:h-8 before:bg-brand-secondary before:rounded-full before:hidden md:before:block" {...props} />
+                <h2 className="scroll-mt-24 text-3xl md:text-4xl font-heading font-extrabold text-brand-primary mt-14 mb-8 pb-4 border-b-2 border-slate-100 flex items-center gap-3 relative before:content-[''] before:absolute before:-left-6 before:top-1/2 before:-translate-y-1/2 before:w-2 before:h-8 before:bg-brand-secondary before:rounded-full before:hidden md:before:block" {...props} />
               ),
               h3: ({node, ...props}) => (
-                <h3 className="text-2xl md:text-3xl font-heading font-bold text-slate-800 mt-10 mb-6 flex items-center gap-3" {...props}>
+                <h3 className="scroll-mt-24 text-2xl md:text-3xl font-heading font-bold text-slate-800 mt-10 mb-6 flex items-center gap-3" {...props}>
                   <span className="w-2 h-6 bg-brand-tertiary rounded-full block"></span>
                   {props.children}
                 </h3>

@@ -66,7 +66,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setProfile(newProfile);
           }
         } catch (error) {
-          handleFirestoreError(error, OperationType.WRITE, path);
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          if (errorMessage.toLowerCase().includes('offline')) {
+            console.warn('Firestore is offline, continuing with local profile fallback.');
+            setProfile({
+              uid: user.uid,
+              email: user.email || '',
+              displayName: user.displayName || '',
+              photoURL: user.photoURL || '',
+              role: user.email === 'homebelmiro@gmail.com' ? 'admin' : 'reader'
+            });
+          } else {
+            handleFirestoreError(error, OperationType.WRITE, path);
+          }
         }
       } else {
         setProfile(null);

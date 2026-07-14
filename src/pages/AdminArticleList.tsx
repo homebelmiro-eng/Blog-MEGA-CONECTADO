@@ -185,7 +185,7 @@ export default function AdminArticleList() {
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Link 
-                        to={`/artigo/${article.id}`} 
+                        to={`/artigo/${article.slug || article.id}`} 
                         target="_blank"
                         className="p-2 text-slate-400 hover:text-brand-secondary hover:bg-brand-secondary/5 rounded-lg transition-all"
                         title="Visualizar"

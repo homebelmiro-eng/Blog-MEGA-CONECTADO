@@ -17,6 +17,11 @@ export const articleService = {
         ...doc.data()
       })) as Article[];
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.toLowerCase().includes('offline')) {
+        console.warn('Firestore is offline. Falling back to static/cached articles list.');
+        return [];
+      }
       handleFirestoreError(error, OperationType.LIST, path);
       throw error;
     }
@@ -35,6 +40,11 @@ export const articleService = {
       }
       return null;
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.toLowerCase().includes('offline')) {
+        console.warn(`Firestore is offline. Returning null for article ID: ${id} to trigger static fallback.`);
+        return null;
+      }
       handleFirestoreError(error, OperationType.GET, path);
       throw error;
     }
@@ -54,6 +64,11 @@ export const articleService = {
       }
       return null;
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.toLowerCase().includes('offline')) {
+        console.warn(`Firestore is offline. Returning null for article slug: ${slug} to trigger static fallback.`);
+        return null;
+      }
       handleFirestoreError(error, OperationType.GET, path);
       throw error;
     }
@@ -78,6 +93,11 @@ export const articleService = {
       
       return results.filter(a => a.id !== excludeId).slice(0, limitCount);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.toLowerCase().includes('offline')) {
+        console.warn('Firestore is offline. Returning empty related articles list.');
+        return [];
+      }
       handleFirestoreError(error, OperationType.LIST, path);
       throw error;
     }
@@ -93,6 +113,11 @@ export const articleService = {
         views: increment(1)
       });
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.toLowerCase().includes('offline')) {
+        console.warn(`Firestore is offline. View tracking skipped for article: ${id}`);
+        return;
+      }
       handleFirestoreError(error, OperationType.UPDATE, path);
       throw error;
     }

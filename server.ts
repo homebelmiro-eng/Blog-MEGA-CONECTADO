@@ -145,34 +145,94 @@ async function startServer() {
 
   app.get('/sitemap.xml', async (req, res) => {
     try {
-      // Import data dynamically to ensure we get the latest if we need to, 
-      // but a static import at the top is better for bundling.
-      // We will just import it at the top of the file.
-      const { heroArticle, heroSideArticles, topNewsArticles, latestArticles } = await import('./src/data.ts');
       const BASE_URL = 'https://megaconectado.com.br';
-      
-      const allArticles = [
-        heroArticle,
-        ...heroSideArticles,
-        ...topNewsArticles,
-        ...latestArticles
-      ];
+
+      // Helper function to format timestamp into YYYY-MM-DD
+      const formatLastmod = (dateField: any): string => {
+        if (!dateField) return '';
+        try {
+          let date: Date;
+          if (typeof dateField.toDate === 'function') {
+            date = dateField.toDate();
+          } else if (dateField.seconds) {
+            date = new Date(dateField.seconds * 1000);
+          } else {
+            date = new Date(dateField);
+          }
+          if (isNaN(date.getTime())) return '';
+          return date.toISOString().split('T')[0];
+        } catch (e) {
+          return '';
+        }
+      };
+
+      // 1. Fetch Articles (Dynamic from Firestore with static fallback)
+      let allArticles: any[] = [];
+      let loadedFromFirestore = false;
+
+      try {
+        const { getDb } = await import('./src/lib/firebase.ts');
+        const { collection, getDocs, query, orderBy } = await import('firebase/firestore');
+        const db = getDb();
+        const q = query(collection(db, 'articles'), orderBy('date', 'desc'));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          allArticles = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          loadedFromFirestore = true;
+        }
+      } catch (e) {
+        console.warn('Could not fetch articles from Firestore for sitemap, falling back to static data:', e);
+      }
+
+      if (!loadedFromFirestore) {
+        const { heroArticle, heroSideArticles, topNewsArticles, latestArticles } = await import('./src/data.ts');
+        allArticles = [
+          heroArticle,
+          ...heroSideArticles,
+          ...topNewsArticles,
+          ...latestArticles
+        ];
+      }
 
       const articleUrls = allArticles.map(article => {
+        const identifier = article.slug || article.id;
+        const lastmodValue = formatLastmod(article.date);
+        const lastmodTag = lastmodValue ? `\n    <lastmod>${lastmodValue}</lastmod>` : '';
         return `  <url>
-    <loc>${BASE_URL}/artigo/${article.id}</loc>
+    <loc>${BASE_URL}/artigo/${identifier}</loc>${lastmodTag}
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
       });
 
-      const categories = [
-        'ia', 'software', 'seguranca', 'hardware', 'automacao', 'internet', 'tutoriais', 'reviews', 'comparativos',
-        'servicos-financeiros', 'tablets', 'smartwatches', 'gadgets',
-        'produtividade', 'tvs', 'perifericos', 'mobilidade',
-        'computadores', 'wearables', 'casa-conectada-e-iot', 'fones-de-ouvido',
-        'ciencia-e-saude', 'robotica', 'blockchain'
-      ];
+      // 2. Fetch Categories (Dynamic from Firestore with static fallback)
+      let categories: string[] = [];
+      try {
+        const { getDb } = await import('./src/lib/firebase.ts');
+        const { collection, getDocs } = await import('firebase/firestore');
+        const db = getDb();
+        const categoriesSnap = await getDocs(collection(db, 'categories'));
+        if (!categoriesSnap.empty) {
+          categories = categoriesSnap.docs.map(doc => doc.data().slug || doc.id);
+        }
+      } catch (e) {
+        console.warn('Could not fetch categories from Firestore for sitemap, using static fallback:', e);
+      }
+
+      if (categories.length === 0) {
+        categories = [
+          'ia', 'software', 'seguranca', 'hardware', 'automacao', 'internet', 'tutoriais', 'reviews', 'comparativos',
+          'servicos-financeiros', 'tablets', 'smartwatches', 'gadgets',
+          'produtividade', 'tvs', 'perifericos', 'mobilidade',
+          'computadores', 'wearables', 'casa-conectada-e-iot', 'fones-de-ouvido',
+          'ciencia-e-saude', 'robotica', 'blockchain'
+        ];
+      }
+
       const categoryUrls = categories.map(cat => {
         return `  <url>
     <loc>${BASE_URL}/categoria/${cat}</loc>
@@ -181,10 +241,27 @@ async function startServer() {
   </url>`;
       });
 
-      const pages = [
-        'sobre-nos', 'equipe-editorial', 'privacidade', 'termos', 
-        'politica-de-cookies', 'divulgacao-de-afiliados', 'politica-editorial'
-      ];
+      // 3. Fetch Institutional Pages (Dynamic check with static fallback)
+      let pages: string[] = [];
+      try {
+        const { getDb } = await import('./src/lib/firebase.ts');
+        const { collection, getDocs } = await import('firebase/firestore');
+        const db = getDb();
+        const pagesSnap = await getDocs(collection(db, 'pages'));
+        if (!pagesSnap.empty) {
+          pages = pagesSnap.docs.map(doc => doc.data().slug || doc.id);
+        }
+      } catch (e) {
+        // Fallback or page collection does not exist
+      }
+
+      if (pages.length === 0) {
+        pages = [
+          'sobre-nos', 'equipe-editorial', 'privacidade', 'termos', 
+          'politica-de-cookies', 'divulgacao-de-afiliados', 'politica-editorial'
+        ];
+      }
+
       const pageUrls = pages.map(page => {
         return `  <url>
     <loc>${BASE_URL}/pagina/${page}</loc>

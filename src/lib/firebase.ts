@@ -3,14 +3,21 @@ import { initializeFirestore, getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
+const getEnvVar = (key: string) => {
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env[key];
+  }
+  return process.env[key];
+};
+
 const envConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || '(default)'
+  apiKey: getEnvVar('VITE_FIREBASE_API_KEY'),
+  authDomain: getEnvVar('VITE_FIREBASE_AUTH_DOMAIN'),
+  projectId: getEnvVar('VITE_FIREBASE_PROJECT_ID'),
+  storageBucket: getEnvVar('VITE_FIREBASE_STORAGE_BUCKET'),
+  messagingSenderId: getEnvVar('VITE_FIREBASE_MESSAGING_SENDER_ID'),
+  appId: getEnvVar('VITE_FIREBASE_APP_ID'),
+  firestoreDatabaseId: getEnvVar('VITE_FIREBASE_DATABASE_ID') || '(default)'
 };
 
 // @ts-ignore
@@ -89,8 +96,9 @@ export interface FirestoreErrorInfo {
 
 export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
   const auth = getFirebaseAuth();
+  const errorMessage = error instanceof Error ? error.message : String(error);
   const errInfo: FirestoreErrorInfo = {
-    error: error instanceof Error ? error.message : String(error),
+    error: errorMessage,
     authInfo: {
       userId: auth.currentUser?.uid,
       email: auth.currentUser?.email,
@@ -104,7 +112,13 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
     },
     operationType,
     path
+  };
+
+  const isOffline = errorMessage.toLowerCase().includes('offline');
+  if (isOffline) {
+    console.warn('Firestore Offline Notice (Non-fatal fallback):', JSON.stringify(errInfo));
+  } else {
+    console.error('Firestore Error: ', JSON.stringify(errInfo));
   }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
   throw new Error(JSON.stringify(errInfo));
 }

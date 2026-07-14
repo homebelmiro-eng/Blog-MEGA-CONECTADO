@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { List, ChevronDown, ChevronUp } from 'lucide-react';
+import { List, ChevronDown, ChevronUp, Hash } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface Heading {
   id: string;
@@ -7,22 +8,42 @@ interface Heading {
   level: number;
 }
 
-export default function TableOfContents() {
+interface TableOfContentsProps {
+  content?: string;
+}
+
+export default function TableOfContents({ content }: TableOfContentsProps) {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>('');
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1024; // Collapse on mobile/tablet, expand on large screens by default
+    }
+    return true;
+  });
 
   useEffect(() => {
-    // Scan for H2 and H3 headings in the article body
-    const articleBody = document.querySelector('.article-body');
-    if (!articleBody) return;
+    // Scan for H2 and H3 headings strictly in the article prose content
+    const proseContainer = document.querySelector('.article-body .prose');
+    if (!proseContainer) return;
 
-    const headingElements = Array.from(articleBody.querySelectorAll('h2, h3'));
+    // We scan for h2 and h3 elements inside the prose body
+    const headingElements = Array.from(proseContainer.querySelectorAll('h2, h3'));
+    
     const items = headingElements.map((el, index) => {
-      // Ensure element has an ID
+      // If the heading doesn't have an ID, we assign one based on its slugified text
       if (!el.id) {
-        el.id = `heading-${index}`;
+        const text = el.textContent || '';
+        const slug = text
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') // remove accents
+          .replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+          .replace(/\s+/g, '-') // replace spaces with hyphens
+          .replace(/-+/g, '-'); // collapse dashes
+        el.id = slug || `section-${index}`;
       }
+      
       return {
         id: el.id,
         title: el.textContent || '',
@@ -32,75 +53,120 @@ export default function TableOfContents() {
 
     setHeadings(items);
 
+    // Track active heading using IntersectionObserver
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
+        // Find the first heading that is currently intersecting the active viewport area
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+        if (visibleEntries.length > 0) {
+          // Sort by bounding client rect top to get the topmost visible heading
+          const topmost = visibleEntries.reduce((prev, curr) => 
+            prev.boundingClientRect.top < curr.boundingClientRect.top ? prev : curr
+          );
+          setActiveId(topmost.target.id);
+        }
       },
-      { rootMargin: '-10% 0px -70% 0px' }
+      {
+        rootMargin: '-80px 0px -60% 0px', // Focus window offset for sticky navbar
+        threshold: [0, 1.0]
+      }
     );
 
     headingElements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [content]); // Re-run when article content changes
 
   if (headings.length === 0) return null;
 
   return (
-    <nav className="bg-slate-50 p-6 md:p-8 rounded-2xl border-2 border-slate-200 mb-12 shadow-md hover:shadow-lg transition-all duration-300">
-      <button 
+    <nav className="bg-slate-50/60 hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-5 md:p-6 mb-10 transition-all duration-300 shadow-sm">
+      <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="w-full flex items-center justify-between text-brand-primary group focus:outline-none bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:border-brand-secondary/30 transition-all"
+        className="w-full flex items-center justify-between text-brand-primary group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/30 rounded-xl cursor-pointer"
       >
         <div className="flex items-center gap-3">
-          <div className="bg-brand-secondary/10 p-2 rounded-lg group-hover:bg-brand-secondary/20 transition-colors">
-            <List className="w-5 h-5 text-brand-secondary" />
+          <div className="bg-brand-secondary/10 p-2 rounded-xl group-hover:bg-brand-secondary/20 transition-colors">
+            <List className="w-4 h-4 text-brand-secondary" />
           </div>
-          <h3 className="font-heading font-bold text-xl group-hover:text-brand-secondary transition-colors">Índice do Artigo</h3>
+          <span className="font-heading font-extrabold text-lg text-brand-primary tracking-tight group-hover:text-brand-secondary transition-colors">
+            Índice do Conteúdo
+          </span>
         </div>
-        <div className="bg-slate-100 p-2 rounded-full group-hover:bg-brand-secondary/10 transition-colors">
+        <div className="bg-white hover:bg-slate-100 p-1.5 rounded-full border border-slate-200/60 shadow-sm transition-colors">
           {isCollapsed ? (
-            <ChevronDown className="w-5 h-5 text-slate-500 group-hover:text-brand-secondary transition-colors" />
+            <ChevronDown className="w-4 h-4 text-slate-500" />
           ) : (
-            <ChevronUp className="w-5 h-5 text-slate-500 group-hover:text-brand-secondary transition-colors" />
+            <ChevronUp className="w-4 h-4 text-slate-500" />
           )}
         </div>
       </button>
-      
-      {!isCollapsed && (
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mt-6 pt-6 border-t border-slate-200 animate-in fade-in slide-in-from-top-2 duration-300">
-          {headings.map((heading) => (
-            <li 
-              key={heading.id}
-              className={`${heading.level === 3 ? 'ml-4' : ''}`}
-            >
-              <a
-                href={`#${heading.id}`}
-                className={`text-sm block transition-all duration-200 py-2 px-3 rounded-lg border ${
-                  activeId === heading.id
-                    ? 'text-brand-secondary font-bold translate-x-1 bg-brand-secondary/10 border-brand-secondary/20 shadow-sm'
-                    : 'text-slate-600 hover:text-brand-primary hover:translate-x-1 hover:bg-white border-transparent hover:border-slate-200 hover:shadow-sm'
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById(heading.id)?.scrollIntoView({
-                    behavior: 'smooth'
-                  });
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  {activeId === heading.id && <span className="w-1.5 h-1.5 rounded-full bg-brand-secondary shrink-0 shadow-sm"></span>}
-                  {heading.title}
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+
+      <AnimatePresence initial={false}>
+        {!isCollapsed && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <ul className="space-y-1.5 mt-5 pt-4 border-t border-slate-200/60">
+              {headings.map((heading) => {
+                const isActive = activeId === heading.id;
+                const isH3 = heading.level === 3;
+
+                return (
+                  <li
+                    key={heading.id}
+                    style={{ paddingLeft: isH3 ? '1.25rem' : '0' }}
+                    className="relative animate-in fade-in slide-in-from-top-1 duration-200"
+                  >
+                    <a
+                      href={`#${heading.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const element = document.getElementById(heading.id);
+                        if (element) {
+                          const offset = 90; // offset for sticky navbar
+                          const bodyRect = document.body.getBoundingClientRect().top;
+                          const elementRect = element.getBoundingClientRect().top;
+                          const elementPosition = elementRect - bodyRect;
+                          const offsetPosition = elementPosition - offset;
+
+                          window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                          });
+                          setActiveId(heading.id);
+                        }
+                      }}
+                      className={`group flex items-center gap-2 py-1.5 px-3 rounded-lg text-sm transition-all duration-200 ${
+                        isActive
+                          ? 'text-brand-secondary font-bold bg-brand-secondary/5 border-l-2 border-brand-secondary pl-2.5'
+                          : 'text-slate-600 hover:text-brand-primary hover:bg-slate-100/80 pl-3'
+                      }`}
+                    >
+                      {isH3 ? (
+                        <span className={`text-[10px] uppercase font-mono tracking-widest shrink-0 transition-colors ${
+                          isActive ? 'text-brand-secondary/80' : 'text-slate-400 group-hover:text-slate-600'
+                        }`}>
+                          •
+                        </span>
+                      ) : (
+                        <Hash className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+                          isActive ? 'text-brand-secondary' : 'text-slate-400 group-hover:text-slate-600'
+                        }`} />
+                      )}
+                      <span className="truncate leading-relaxed">{heading.title}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
