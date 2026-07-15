@@ -11,7 +11,6 @@ export default function Footer() {
   ];
 
   const bottomLinks = [
-    { name: 'Hub Estratégico', path: '/strategic-hub' },
     { name: 'Sobre Nós', path: '/pagina/sobre' },
     { name: 'Contato', path: '/contato' },
     { name: 'Política de Privacidade', path: '/pagina/privacidade' },

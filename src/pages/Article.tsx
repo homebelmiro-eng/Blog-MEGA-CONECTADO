@@ -18,8 +18,9 @@ import FAQ from '../components/FAQ';
 import RelatedArticles from '../components/RelatedArticles';
 import OptimizedImage from '../components/OptimizedImage';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
-import { Article as ArticleType } from '../types';
+import { Article as ArticleType, GlossaryTerm } from '../types';
 import authorPortrait from '../assets/images/divino_luciano_belmiro.jpg';
+import { getGlossaryTerms, injectGlossaryLinks } from '../services/glossary';
 
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -53,6 +54,19 @@ export default function Article() {
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [isReaderMode, setIsReaderMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [glossaryTerms, setGlossaryTerms] = useState<GlossaryTerm[]>([]);
+
+  useEffect(() => {
+    async function fetchGlossary() {
+      try {
+        const terms = await getGlossaryTerms();
+        setGlossaryTerms(terms);
+      } catch (e) {
+        console.error('Error fetching glossary terms for article autolinks:', e);
+      }
+    }
+    fetchGlossary();
+  }, []);
 
   useEffect(() => {
     async function loadArticle() {
@@ -330,7 +344,7 @@ export default function Article() {
               )
             }}
           >
-            {article.content || `
+            {injectGlossaryLinks(article.content || `
 ## Introdução ao Tema
 Este é o conteúdo demonstrativo do artigo "${article.title}". A Inteligência Artificial e a tecnologia estão avançando a passos largos, e compreender esse movimento é essencial. De acordo com especialistas do setor, o cenário atual exige adaptabilidade e visão de longo prazo.
 
@@ -353,7 +367,7 @@ As projeções para os próximos anos indicam uma integração ainda maior entre
 
 ## Conclusão
 Estar preparado para essas mudanças é o que diferenciará os líderes dos seguidores na próxima década. Acompanhar as notícias e tendências no Mega Conectado é o primeiro passo para garantir seu lugar nesse futuro promissor.
-            `}
+            `, glossaryTerms)}
           </ReactMarkdown>
         </div>
 

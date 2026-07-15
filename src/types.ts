@@ -27,3 +27,12 @@ export interface Article {
   latitude?: number;
   longitude?: number;
 }
+
+export interface GlossaryTerm {
+  id: string;
+  term: string;
+  definition: string;
+  slug: string;
+  category: string;
+  createdAt?: any;
+}

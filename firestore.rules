@@ -48,5 +48,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isRole(['admin']);
     }
+
+    match /glossary/{termId} {
+      allow read: if true;
+      allow write: if isRole(['admin', 'editor', 'author']);
+    }
   }
 }

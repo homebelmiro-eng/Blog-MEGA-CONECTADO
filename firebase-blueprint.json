@@ -44,6 +44,14 @@
       "siteName": "string",
       "description": "string",
       "googleAnalyticsId": "string"
+    },
+    "glossary": {
+      "id": "string",
+      "term": "string",
+      "definition": "string",
+      "slug": "string",
+      "category": "string",
+      "createdAt": "timestamp"
     }
   }
 }

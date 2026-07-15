@@ -15,6 +15,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminArticleList from './pages/AdminArticleList';
 import AdminArticleEditor from './pages/AdminArticleEditor';
 import AdminLogin from './pages/AdminLogin';
+import Glossario from './pages/Glossario';
+import AdminGlossario from './pages/AdminGlossario';
 
 // Components
 import Navbar from './components/Navbar';
@@ -69,10 +71,12 @@ export default function App() {
               <Route path="/admin/autores" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
               <Route path="/admin/midia" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
               <Route path="/admin/configuracoes" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/glossario" element={<ProtectedRoute><AdminGlossario /></ProtectedRoute>} />
 
               {/* Public Routes */}
               <Route path="/" element={<MainLayout><Home /></MainLayout>} />
               <Route path="/artigo/:slugOrId" element={<MainLayout><Article /></MainLayout>} />
+              <Route path="/glossario" element={<MainLayout><Glossario /></MainLayout>} />
               <Route path="/pagina/:slug" element={<MainLayout><Page /></MainLayout>} />
               <Route path="/categoria/:slug" element={<MainLayout><Category /></MainLayout>} />
               <Route path="/contato" element={<MainLayout><Contact /></MainLayout>} />

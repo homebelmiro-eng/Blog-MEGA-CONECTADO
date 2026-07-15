@@ -12,7 +12,8 @@ import {
   X,
   Bell,
   Search,
-  Plus
+  Plus,
+  BookOpen
 } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -26,6 +27,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
     { icon: FileText, label: 'Artigos', path: '/admin/artigos' },
+    { icon: BookOpen, label: 'Glossário', path: '/admin/glossario' },
     { icon: Layers, label: 'Categorias', path: '/admin/categorias' },
     { icon: Users, label: 'Autores', path: '/admin/autores' },
     { icon: ImageIcon, label: 'Mídia', path: '/admin/midia' },
