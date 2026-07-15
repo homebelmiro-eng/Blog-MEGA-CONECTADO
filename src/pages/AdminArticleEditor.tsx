@@ -23,6 +23,7 @@ import { doc, getDoc, setDoc, collection, addDoc, Timestamp } from 'firebase/fir
 import { getDb, handleFirestoreError, OperationType } from '../lib/firebase';
 import { uploadImage } from '../lib/storage';
 import { geminiService } from '../lib/gemini';
+import CategoryBadge from '../components/CategoryBadge';
 import toast from 'react-hot-toast';
 import { generateSlug } from '../lib/utils';
 import { analyzeSEO } from '../lib/seo-utils';
@@ -610,40 +611,48 @@ export default function AdminArticleEditor() {
                   name="category"
                   control={control}
                   render={({ field }) => (
-                    <select {...field} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold">
-                      <option value="">Selecione...</option>
-                      <optgroup label="Categorias Principais">
-                        <option value="IA">IA</option>
-                        <option value="Software">Software</option>
-                        <option value="Segurança">Segurança</option>
-                        <option value="Hardware">Hardware</option>
-                        <option value="Automação">Automação</option>
-                        <option value="Internet">Internet</option>
-                      </optgroup>
-                      <optgroup label="Outras Categorias">
-                        <option value="Blockchain">Blockchain</option>
-                        <option value="Casa Conectada e IoT">Casa Conectada e IoT</option>
-                        <option value="Ciência">Ciência</option>
-                        <option value="Ciência e Saúde">Ciência e Saúde</option>
-                        <option value="Comportamento">Comportamento</option>
-                        <option value="Computadores">Computadores</option>
-                        <option value="Fones de ouvido">Fones de ouvido</option>
-                        <option value="Gadgets">Gadgets</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Mobilidade">Mobilidade</option>
-                        <option value="Negócios">Negócios</option>
-                        <option value="Periféricos">Periféricos</option>
-                        <option value="Produtividade">Produtividade</option>
-                        <option value="Psicanálise">Psicanálise</option>
-                        <option value="Robótica">Robótica</option>
-                        <option value="Serviços Financeiros">Serviços Financeiros</option>
-                        <option value="Smartwatches">Smartwatches</option>
-                        <option value="Tablets">Tablets</option>
-                        <option value="Tecnologia">Tecnologia</option>
-                        <option value="TVs">TVs</option>
-                        <option value="Wearables">Wearables</option>
-                      </optgroup>
-                    </select>
+                    <div className="space-y-2">
+                      <select {...field} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold">
+                        <option value="">Selecione...</option>
+                        <optgroup label="Categorias Principais">
+                          <option value="IA">IA</option>
+                          <option value="Software">Software</option>
+                          <option value="Segurança">Segurança</option>
+                          <option value="Hardware">Hardware</option>
+                          <option value="Automação">Automação</option>
+                          <option value="Internet">Internet</option>
+                        </optgroup>
+                        <optgroup label="Outras Categorias">
+                          <option value="Blockchain">Blockchain</option>
+                          <option value="Casa Conectada e IoT">Casa Conectada e IoT</option>
+                          <option value="Ciência">Ciência</option>
+                          <option value="Ciência e Saúde">Ciência e Saúde</option>
+                          <option value="Comportamento">Comportamento</option>
+                          <option value="Computadores">Computadores</option>
+                          <option value="Fones de ouvido">Fones de ouvido</option>
+                          <option value="Gadgets">Gadgets</option>
+                          <option value="Marketing">Marketing</option>
+                          <option value="Mobilidade">Mobilidade</option>
+                          <option value="Negócios">Negócios</option>
+                          <option value="Periféricos">Periféricos</option>
+                          <option value="Produtividade">Produtividade</option>
+                          <option value="Psicanálise">Psicanálise</option>
+                          <option value="Robótica">Robótica</option>
+                          <option value="Serviços Financeiros">Serviços Financeiros</option>
+                          <option value="Smartwatches">Smartwatches</option>
+                          <option value="Tablets">Tablets</option>
+                          <option value="Tecnologia">Tecnologia</option>
+                          <option value="TVs">TVs</option>
+                          <option value="Wearables">Wearables</option>
+                        </optgroup>
+                      </select>
+                      {field.value && (
+                        <div className="flex items-center gap-2 pt-1">
+                          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Visualização:</span>
+                          <CategoryBadge category={field.value} />
+                        </div>
+                      )}
+                    </div>
                   )}
                 />
                 {errors.category && <p className="text-red-500 text-xs mt-1 font-medium">{errors.category.message}</p>}

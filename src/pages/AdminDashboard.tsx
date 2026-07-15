@@ -20,6 +20,7 @@ import {
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { generateSlug } from '../lib/utils';
+import CategoryBadge from '../components/CategoryBadge';
 
 export default function AdminDashboard() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -230,7 +231,9 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate">{article.title}</p>
-                    <p className="text-[10px] text-white/40">{article.category}</p>
+                    <div className="mt-1">
+                      <CategoryBadge category={article.category} className="scale-90 origin-left py-0.5 px-2" />
+                    </div>
                   </div>
                   <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-brand-secondary transition-colors" />
                 </div>

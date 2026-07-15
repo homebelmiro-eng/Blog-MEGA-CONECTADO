@@ -12,6 +12,7 @@ import {
 import { getDb, handleFirestoreError, OperationType } from '../lib/firebase';
 import { Article } from '../types';
 import { formatDate } from '../lib/utils';
+import CategoryBadge from '../components/CategoryBadge';
 import { 
   Plus, 
   Search, 
@@ -162,9 +163,7 @@ export default function AdminArticleList() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
-                      {article.category}
-                    </span>
+                    <CategoryBadge category={article.category} />
                   </td>
                   <td className="px-6 py-4">
                     {article.status === 'published' ? (
