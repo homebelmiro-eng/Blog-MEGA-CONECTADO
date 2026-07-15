@@ -21,9 +21,44 @@ import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { generateSlug } from '../lib/utils';
 import CategoryBadge from '../components/CategoryBadge';
+import {
+  ResponsiveContainer,
+  BarChart as ReCharts,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell
+} from 'recharts';
+
+interface CategoryChartItem {
+  category: string;
+  count: number;
+  color: string;
+}
+
+function getCategoryColor(category: string): string {
+  const norm = (category || '').toLowerCase().trim();
+  if (norm === 'ia' || norm.includes('inteligencia') || norm.includes('generativa')) return '#6366f1'; // Indigo
+  if (norm.includes('seguranca') || norm.includes('cyber') || norm.includes('ciber')) return '#f43f5e'; // Rose
+  if (norm.includes('software') || norm.includes('aplicativo') || norm.includes('desenvolvimento') || norm.includes('app')) return '#3b82f6'; // Blue
+  if (norm.includes('automacao') || norm.includes('workflow') || norm.includes('tutorial')) return '#f59e0b'; // Amber
+  if (norm.includes('internet') || norm.includes('web') || norm.includes('rede')) return '#06b6d4'; // Cyan
+  if (norm.includes('marketing') || norm.includes('venda')) return '#ec4899'; // Pink
+  if (norm.includes('negocio') || norm.includes('mercado') || norm.includes('economia') || norm.includes('gestao') || norm.includes('trabalho') || norm.includes('carreira')) return '#10b981'; // Emerald
+  if (norm.includes('smartphone') || norm.includes('celular') || norm.includes('gadget') || norm.includes('wearable') || norm.includes('smartwatch') || norm.includes('fone')) return '#8b5cf6'; // Violet
+  if (norm.includes('casa') || norm.includes('home') || norm.includes('iot')) return '#0ea5e9'; // Sky
+  if (norm.includes('ciencia') || norm.includes('saude') || norm.includes('psicanalise') || norm.includes('comportamento')) return '#a855f7'; // Purple
+  if (norm.includes('blockchain') || norm.includes('cripto') || norm.includes('financa') || norm.includes('financeiro') || norm.includes('moeda')) return '#f97316'; // Orange
+  if (norm.includes('tv')) return '#14b8a6'; // Teal
+  if (norm.includes('hardware') || norm.includes('computador') || norm.includes('periferico') || norm.includes('robotica')) return '#64748b'; // Slate
+  return '#94a3b8'; // Default Slate 400
+}
 
 export default function AdminDashboard() {
   const [articles, setArticles] = useState<Article[]>([]);
+  const [categoryChartData, setCategoryChartData] = useState<CategoryChartItem[]>([]);
   const [isMigrating, setIsMigrating] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
@@ -49,6 +84,21 @@ export default function AdminDashboard() {
           drafts: allArticles.filter(a => a.status === 'draft').length,
           categories: categoriesSnap.size || 4 // Fallback if none created yet
         });
+
+        // Compute counts of articles per category
+        const counts: Record<string, number> = {};
+        allArticles.forEach(art => {
+          const cat = art.category || 'Sem Categoria';
+          counts[cat] = (counts[cat] || 0) + 1;
+        });
+
+        const formattedData: CategoryChartItem[] = Object.entries(counts).map(([category, count]) => ({
+          category,
+          count,
+          color: getCategoryColor(category)
+        })).sort((a, b) => b.count - a.count);
+
+        setCategoryChartData(formattedData);
       } catch (error) {
         handleFirestoreError(error, OperationType.LIST, 'articles');
       }
@@ -195,6 +245,77 @@ export default function AdminDashboard() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Recharts - Category Distribution Chart */}
+      <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Layers className="w-6 h-6 text-brand-secondary" />
+            <h3 className="font-heading font-bold text-xl text-brand-primary">Distribuição de Artigos por Categoria</h3>
+          </div>
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Filtro de Conteúdo</span>
+        </div>
+
+        {categoryChartData.length === 0 ? (
+          <div className="h-[280px] flex items-center justify-center text-slate-400 font-sans text-sm">
+            <div className="text-center space-y-2">
+              <div className="w-8 h-8 border-4 border-brand-secondary border-t-transparent rounded-full animate-spin mx-auto"></div>
+              <p>Carregando distribuição por categoria...</p>
+            </div>
+          </div>
+        ) : (
+          <div className="h-[280px] w-full font-sans">
+            <ResponsiveContainer width="100%" height="100%">
+              <ReCharts
+                data={categoryChartData}
+                margin={{ top: 10, right: 30, left: 10, bottom: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis 
+                  dataKey="category" 
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: '#64748b', fontSize: 11, fontWeight: 600 }}
+                  dy={10}
+                />
+                <YAxis 
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: '#64748b', fontSize: 11, fontWeight: 500 }}
+                  dx={-10}
+                  allowDecimals={false}
+                />
+                <Tooltip
+                  cursor={{ fill: '#f8fafc' }}
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const data = payload[0].payload as CategoryChartItem;
+                      return (
+                        <div className="bg-slate-900 text-white p-3 rounded-xl shadow-xl border border-slate-800 text-xs">
+                          <p className="font-extrabold mb-1">{data.category}</p>
+                          <p className="text-slate-300 font-medium">
+                            Total de Artigos: <span className="text-brand-secondary font-extrabold">{data.count}</span>
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Bar 
+                  dataKey="count" 
+                  radius={[6, 6, 0, 0]} 
+                  maxBarSize={50}
+                >
+                  {categoryChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </ReCharts>
+            </ResponsiveContainer>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
