@@ -9,6 +9,8 @@ export default function AuthorProfile() {
         src={authorPortrait} 
         alt="Foto de Divino Luciano Belmiro" 
         className="w-24 h-24 rounded-full object-cover border-4 border-slate-50 mb-4 shadow-sm"
+        loading="lazy"
+        decoding="async"
       />
       <h3 className="font-heading font-bold text-xl text-brand-primary mb-1">Divino Luciano Belmiro</h3>
       <p className="text-sm font-semibold text-brand-secondary mb-4 leading-snug">

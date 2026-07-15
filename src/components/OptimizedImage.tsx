@@ -72,6 +72,7 @@ export default function OptimizedImage({
         alt={alt}
         className={className}
         loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
         {...(priority ? { fetchPriority: 'high' } as any : {})}
         {...props}
       />
@@ -95,6 +96,7 @@ export default function OptimizedImage({
       alt={alt}
       className={className}
       loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
       {...(priority ? { fetchPriority: 'high' } as any : {})}
       {...props}
     />

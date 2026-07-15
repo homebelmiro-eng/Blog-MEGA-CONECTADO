@@ -214,6 +214,8 @@ export default function Article() {
               src={authorPortrait} 
               alt={article.author || 'Divino Luciano Belmiro'} 
               className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
+              loading="lazy"
+              decoding="async"
             />
             <div className="flex flex-col">
               <span className="text-sm font-bold text-brand-primary">Por {article.author || 'Divino Luciano Belmiro'}</span>
