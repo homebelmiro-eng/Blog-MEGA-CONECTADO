@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Facebook, Twitter, Youtube, Instagram, Moon, ChevronDown, Cpu, User } from 'lucide-react';
+import { Search, Facebook, Twitter, Youtube, Instagram, Moon, ChevronDown, Cpu, User, Sparkles } from 'lucide-react';
 import SearchModal from './SearchModal';
 import { useAuth } from '../lib/AuthContext';
 
@@ -88,6 +88,14 @@ export default function Navbar() {
 
           {/* Right Side Icons */}
           <div className="hidden lg:flex items-center gap-5 text-white/80">
+            <Link 
+              to="/strategic-hub" 
+              className="flex items-center gap-1.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-sans font-extrabold text-[11px] uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-md transition-all duration-300 hover:scale-105"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-slate-900 animate-pulse" />
+              Hub Estratégico
+            </Link>
+
             <button onClick={() => setIsSearchOpen(true)} className="hover:text-white transition-colors">
               <Search className="w-5 h-5" />
             </button>

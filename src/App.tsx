@@ -10,6 +10,7 @@ import Category from './pages/Category';
 import Page from './pages/Page';
 import Contact from './pages/Contact';
 import Sitemap from './pages/Sitemap';
+import StrategicHub from './pages/StrategicHub';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminArticleList from './pages/AdminArticleList';
 import AdminArticleEditor from './pages/AdminArticleEditor';
@@ -76,6 +77,8 @@ export default function App() {
               <Route path="/categoria/:slug" element={<MainLayout><Category /></MainLayout>} />
               <Route path="/contato" element={<MainLayout><Contact /></MainLayout>} />
               <Route path="/sitemap" element={<MainLayout><Sitemap /></MainLayout>} />
+              <Route path="/strategic-hub" element={<MainLayout><StrategicHub /></MainLayout>} />
+              <Route path="/hub" element={<MainLayout><StrategicHub /></MainLayout>} />
               <Route path="/:slug" element={<MainLayout><Category /></MainLayout>} />
             </Routes>
           </ErrorBoundary>
