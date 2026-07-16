@@ -1,14 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Cpu, Facebook, Twitter, Youtube, Instagram, Send, Linkedin, Rss } from 'lucide-react';
+import { CATEGORIES_STRUCTURE } from '../categoriesData';
 
 export default function Footer() {
-  const categoryPills = [
-    'Serviços Financeiros', 'Tablets', 'Smartwatches', 'Gadgets',
-    'Produtividade', 'TVs', 'Periféricos', 'Mobilidade',
-    'Computadores', 'Wearables', 'Casa Conectada e IoT', 'Fones de ouvido',
-    'Ciência e Saúde', 'Robótica', 'Blockchain'
-  ];
+  const categoryPills = CATEGORIES_STRUCTURE.slice(6);
 
   const bottomLinks = [
     { name: 'Sobre Nós', path: '/pagina/sobre' },
@@ -46,11 +42,11 @@ export default function Footer() {
           <div className="flex flex-wrap gap-2 justify-center lg:justify-start lg:w-2/4">
             {categoryPills.map((cat) => (
               <Link 
-                key={cat} 
-                to={`/categoria/${cat.toLowerCase().replace(/ /g, '-')}`}
+                key={cat.slug} 
+                to={`/categoria/${cat.slug}`}
                 className="bg-white/10 hover:bg-white/25 text-white/90 hover:text-white px-4 py-1.5 rounded text-[13px] font-medium transition-colors"
               >
-                {cat}
+                {cat.name}
               </Link>
             ))}
           </div>

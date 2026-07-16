@@ -28,6 +28,7 @@ import toast from 'react-hot-toast';
 import { generateSlug } from '../lib/utils';
 import { analyzeSEO } from '../lib/seo-utils';
 import { SEOAnalysisPanel } from '../components/SEOAnalysisPanel';
+import { CATEGORIES_STRUCTURE } from '../categoriesData';
 
 const articleSchema = z.object({
   title: z.string().min(5, 'Título deve ter pelo menos 5 caracteres'),
@@ -614,37 +615,10 @@ export default function AdminArticleEditor() {
                     <div className="space-y-2">
                       <select {...field} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold">
                         <option value="">Selecione...</option>
-                        <optgroup label="Categorias Principais">
-                          <option value="IA">IA</option>
-                          <option value="Software">Software</option>
-                          <option value="Segurança">Segurança</option>
-                          <option value="Hardware">Hardware</option>
-                          <option value="Automação">Automação</option>
-                          <option value="Internet">Internet</option>
-                        </optgroup>
-                        <optgroup label="Outras Categorias">
-                          <option value="Blockchain">Blockchain</option>
-                          <option value="Casa Conectada e IoT">Casa Conectada e IoT</option>
-                          <option value="Celulares">Celulares</option>
-                          <option value="Ciência">Ciência</option>
-                          <option value="Ciência e Saúde">Ciência e Saúde</option>
-                          <option value="Comportamento">Comportamento</option>
-                          <option value="Computadores">Computadores</option>
-                          <option value="Fones de ouvido">Fones de ouvido</option>
-                          <option value="Gadgets">Gadgets</option>
-                          <option value="Marketing">Marketing</option>
-                          <option value="Mobilidade">Mobilidade</option>
-                          <option value="Negócios">Negócios</option>
-                          <option value="Periféricos">Periféricos</option>
-                          <option value="Produtividade">Produtividade</option>
-                          <option value="Psicanálise">Psicanálise</option>
-                          <option value="Robótica">Robótica</option>
-                          <option value="Serviços Financeiros">Serviços Financeiros</option>
-                          <option value="Smartwatches">Smartwatches</option>
-                          <option value="Tablets">Tablets</option>
-                          <option value="Tecnologia">Tecnologia</option>
-                          <option value="TVs">TVs</option>
-                          <option value="Wearables">Wearables</option>
+                        <optgroup label="Todas as Categorias">
+                          {CATEGORIES_STRUCTURE.map((cat) => (
+                            <option key={cat.slug} value={cat.name}>{cat.name}</option>
+                          ))}
                         </optgroup>
                       </select>
                       {field.value && (

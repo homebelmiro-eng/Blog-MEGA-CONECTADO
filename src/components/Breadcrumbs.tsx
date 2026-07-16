@@ -2,38 +2,47 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
+export interface BreadcrumbItem {
+  label: string;
+  url?: string;
+}
+
 interface BreadcrumbsProps {
+  items?: BreadcrumbItem[];
   category?: string;
   title?: string;
 }
 
-export default function Breadcrumbs({ category, title }: BreadcrumbsProps) {
-  const breadcrumbList = [
-    { name: 'Home', url: 'https://megaconectado.com.br/' }
+export default function Breadcrumbs({ items, category, title }: BreadcrumbsProps) {
+  let breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/' }
   ];
 
-  if (category) {
-    breadcrumbList.push({
-      name: category,
-      url: `https://megaconectado.com.br/categoria/${category.toLowerCase().replace(/ /g, '-')}`
-    });
-  }
-
-  if (title) {
-    breadcrumbList.push({
-      name: title,
-      url: window.location.href
-    });
+  if (items) {
+    breadcrumbItems = [...breadcrumbItems, ...items];
+  } else {
+    if (category) {
+      breadcrumbItems.push({
+        label: category,
+        url: `/categoria/${category.toLowerCase().replace(/ /g, '-')}`
+      });
+    }
+  
+    if (title) {
+      breadcrumbItems.push({
+        label: title
+      });
+    }
   }
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbList.map((item, index) => ({
+    "itemListElement": breadcrumbItems.map((item, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "name": item.name,
-      "item": item.url
+      "name": item.label,
+      "item": item.url ? `https://megaconectado.com.br${item.url === '/' ? '' : item.url}` : undefined
     }))
   };
 
@@ -42,28 +51,28 @@ export default function Breadcrumbs({ category, title }: BreadcrumbsProps) {
       <script type="application/ld+json">
         {JSON.stringify(jsonLd)}
       </script>
-      <Link to="/" className="hover:text-brand-secondary transition-colors">Home</Link>
       
-      {category && (
-        <>
-          <ChevronRight className="w-3 h-3 flex-shrink-0" />
-          <Link 
-            to={`/categoria/${category.toLowerCase().replace(/ /g, '-')}`} 
-            className="hover:text-brand-secondary transition-colors"
-          >
-            {category}
-          </Link>
-        </>
-      )}
-
-      {title && (
-        <>
-          <ChevronRight className="w-3 h-3 flex-shrink-0" />
-          <span className="text-slate-500 truncate max-w-[200px]" aria-current="page">
-            {title}
-          </span>
-        </>
-      )}
+      {breadcrumbItems.map((item, index) => {
+        const isLast = index === breadcrumbItems.length - 1;
+        
+        return (
+          <React.Fragment key={`breadcrumb-${index}`}>
+            {index > 0 && <ChevronRight className="w-3 h-3 flex-shrink-0" />}
+            {item.url && !isLast ? (
+              <Link 
+                to={item.url} 
+                className="hover:text-brand-secondary transition-colors"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span className={isLast ? "text-slate-500 truncate max-w-[200px]" : "text-slate-600"} aria-current={isLast ? "page" : undefined}>
+                {item.label}
+              </span>
+            )}
+          </React.Fragment>
+        );
+      })}
     </nav>
   );
 }

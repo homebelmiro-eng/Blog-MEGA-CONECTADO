@@ -31,6 +31,8 @@ import {
   Bookmark
 } from 'lucide-react';
 
+import Breadcrumbs from '../components/Breadcrumbs';
+
 export default function Category() {
   const { slug } = useParams<{ slug: string }>();
   
@@ -290,13 +292,7 @@ export default function Category() {
       />
 
       {/* 1. Breadcrumbs */}
-      <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-6 uppercase tracking-wider font-bold">
-        <Link to="/" className="hover:text-brand-secondary transition-colors">Home</Link>
-        <ChevronRight className="w-3 h-3" />
-        <span className="text-slate-600">Categoria</span>
-        <ChevronRight className="w-3 h-3" />
-        <span className="text-brand-secondary">{currentCategory.name}</span>
-      </div>
+      <Breadcrumbs items={[{ label: currentCategory.name }]} />
 
       {/* 2. Page Header Board */}
       <div className="relative overflow-hidden bg-slate-900 rounded-3xl p-8 md:p-12 text-white mb-10 shadow-lg border border-slate-800">
