@@ -625,6 +625,7 @@ export default function AdminArticleEditor() {
                         <optgroup label="Outras Categorias">
                           <option value="Blockchain">Blockchain</option>
                           <option value="Casa Conectada e IoT">Casa Conectada e IoT</option>
+                          <option value="Celulares">Celulares</option>
                           <option value="Ciência">Ciência</option>
                           <option value="Ciência e Saúde">Ciência e Saúde</option>
                           <option value="Comportamento">Comportamento</option>
