@@ -268,27 +268,27 @@ export default function AdminArticleEditor() {
           ...Object.fromEntries(
             Object.entries(data.reviewData).filter(([_, v]) => v !== undefined && v !== '')
           ),
-          specs: data.reviewData.specs?.split('\n').map(line => {
+          specs: (data.reviewData.specs || '').split('\n').map(line => {
             const [label, ...val] = line.split(':');
             if(label && val.length > 0) {
               return { label: label.trim(), value: val.join(':').trim() };
             }
             return null;
           }).filter(Boolean) || [],
-          pros: data.reviewData.pros?.split('\n').map(t => t.trim()).filter(Boolean) || [],
-          cons: data.reviewData.cons?.split('\n').map(t => t.trim()).filter(Boolean) || [],
+          pros: (data.reviewData.pros || '').split('\n').map(t => t.trim()).filter(Boolean) || [],
+          cons: (data.reviewData.cons || '').split('\n').map(t => t.trim()).filter(Boolean) || [],
         };
       }
 
       const articleData = {
         ...cleanData,
         faq: faqs.filter(f => f.question && f.answer),
-        tags: data.tags?.split(',').map(t => t.trim()).filter(Boolean) || [],
+        tags: (data.tags || '').split(',').map(t => t.trim()).filter(Boolean) || [],
         reviewData: cleanReviewData,
         seo: {
           title: data.metaTitle || data.title,
           description: data.metaDescription || data.excerpt,
-          keywords: data.tags?.split(',').map(t => t.trim()).filter(Boolean) || []
+          keywords: (data.tags || '').split(',').map(t => t.trim()).filter(Boolean) || []
         },
         date: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -314,7 +314,7 @@ export default function AdminArticleEditor() {
       navigate('/admin/artigos');
     } catch (error) {
       console.error("Erro ao salvar artigo:", error);
-      toast.error('Erro ao salvar artigo');
+      toast.error('Erro ao salvar artigo: ' + (error instanceof Error ? error.message : 'Verifique os campos.'));
     } finally {
       setLoading(false);
     }
@@ -581,7 +581,7 @@ export default function AdminArticleEditor() {
                           type="number" 
                           step="any"
                           value={field.value || ''}
-                          onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                          onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                           className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
                         />
                       )}
@@ -597,7 +597,7 @@ export default function AdminArticleEditor() {
                           type="number" 
                           step="any"
                           value={field.value || ''}
-                          onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                          onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                           className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
                         />
                       )}
@@ -653,7 +653,7 @@ export default function AdminArticleEditor() {
                               type="number" 
                               step="0.01"
                               value={field.value || ''}
-                              onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                              onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
                             />
                           )}
@@ -669,7 +669,7 @@ export default function AdminArticleEditor() {
                               type="number" 
                               step="0.01"
                               value={field.value || ''}
-                              onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                              onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
                             />
                           )}
@@ -684,7 +684,7 @@ export default function AdminArticleEditor() {
                             <input 
                               type="number" 
                               value={field.value || ''}
-                              onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                              onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
                               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
                             />
                           )}
@@ -701,7 +701,7 @@ export default function AdminArticleEditor() {
                               step="0.1"
                               max="10"
                               value={field.value || ''}
-                              onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                              onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
                             />
                           )}

@@ -6,16 +6,17 @@ const ARTICLES_COLLECTION = 'articles';
 
 export const articleService = {
   // Fetch all published articles
-  async getAllArticles(): Promise<Article[]> {
+  async getAllArticles(options?: { includeDrafts?: boolean }): Promise<Article[]> {
     const db = getDb();
     const path = ARTICLES_COLLECTION;
     try {
       const q = query(collection(db, path), orderBy('date', 'desc'));
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map(doc => ({
+      const allArticles = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Article[];
+      return options?.includeDrafts ? allArticles : allArticles.filter(a => a.status === 'published');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       if (errorMessage.toLowerCase().includes('offline')) {
