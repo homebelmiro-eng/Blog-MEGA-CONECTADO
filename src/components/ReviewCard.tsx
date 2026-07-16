@@ -12,6 +12,9 @@ export default function ReviewCard({ data }: ReviewCardProps) {
     originalPrice,
     currentPrice,
     discountPercentage,
+    score,
+    summary,
+    specs,
     pros,
     cons,
     affiliateLink,
@@ -27,11 +30,25 @@ export default function ReviewCard({ data }: ReviewCardProps) {
   return (
     <div className="bg-white border-2 border-slate-100 rounded-xl mb-10 mt-6 shadow-sm overflow-hidden">
       {/* Header section */}
-      <div className="p-6 pb-4 flex flex-col md:flex-row md:items-start justify-between gap-4">
-        <h2 className="text-xl font-bold text-slate-800 flex-1">
-          {productName}
-        </h2>
-        <div className="flex flex-col items-end">
+      <div className="p-6 pb-4 flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <div className="flex-1">
+          <div className="flex items-center gap-4 mb-3">
+            {score && (
+              <div className="bg-brand-primary text-white font-black text-2xl w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                {score.toFixed(1)}
+              </div>
+            )}
+            <h2 className="text-xl md:text-2xl font-bold text-slate-800">
+              {productName}
+            </h2>
+          </div>
+          {summary && (
+            <p className="text-slate-600 text-sm leading-relaxed mb-4">
+              {summary}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col items-end flex-shrink-0 min-w-[140px]">
           {originalPrice && (
             <div className="flex items-center gap-2 text-sm text-slate-400 line-through">
               {formatCurrency(originalPrice)}
@@ -42,11 +59,32 @@ export default function ReviewCard({ data }: ReviewCardProps) {
               )}
             </div>
           )}
-          <div className="text-2xl font-bold text-emerald-600 mt-1">
+          <div className="text-3xl font-black text-emerald-600 mt-1">
             {formatCurrency(currentPrice)}
+          </div>
+          <div className="text-xs text-slate-400 font-medium mt-1 uppercase tracking-wider">
+            Melhor preço hoje
           </div>
         </div>
       </div>
+
+      {/* Specs section */}
+      {specs && specs.length > 0 && (
+        <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/50">
+          <h3 className="font-bold text-slate-800 text-sm mb-4 uppercase tracking-wider flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-brand-secondary" />
+            Especificações Principais
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+            {specs.map((spec, index) => (
+              <div key={index} className="flex justify-between items-center py-2 border-b border-slate-200/60 last:border-0 sm:even:border-b sm:last:border-b-0">
+                <span className="text-slate-500 text-xs font-bold uppercase tracking-wider w-1/3">{spec.label}</span>
+                <span className="text-slate-800 text-sm font-medium w-2/3 text-right">{spec.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Pros and Cons section */}
       <div className="px-6 py-4 grid grid-cols-1 md:grid-cols-2 gap-4">

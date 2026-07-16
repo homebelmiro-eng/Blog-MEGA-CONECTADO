@@ -15,6 +15,19 @@ export const heroArticle: Article = {
     originalPrice: 6399,
     currentPrice: 4707.84,
     discountPercentage: 22,
+    score: 8.5,
+    summary: 'O Razr 70 é o mais básico da nova linha Razr, e segue com a proposta dobrável no formato flip. O smartphone utiliza dobradiça em titânio, um dos materiais mais resistentes do mercado, para proporcionar durabilidade na ação de abrir e fechar.',
+    specs: [
+      { label: 'Tela Principal', value: 'pOLED de 6.9", FHD+ (2640 x 1080), 120 Hz' },
+      { label: 'Tela Externa', value: 'pOLED de 1.5", 194 x 368' },
+      { label: 'Processador', value: 'Snapdragon 7 Gen 1' },
+      { label: 'Memória RAM', value: '8 GB' },
+      { label: 'Armazenamento', value: '256 GB' },
+      { label: 'Câmera Traseira', value: '64 MP (OIS) + 13 MP (Ultrawide/Macro)' },
+      { label: 'Câmera Frontal', value: '32 MP' },
+      { label: 'Bateria', value: '4.200 mAh, carregamento 30W' },
+      { label: 'Sistema Operacional', value: 'Android 14' }
+    ],
     pros: [
       'Telas com tecnologia AMOLED',
       'Construção com dobradiça em titânio',

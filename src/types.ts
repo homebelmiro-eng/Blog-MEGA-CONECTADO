@@ -3,11 +3,19 @@ export interface FAQItem {
   answer: string;
 }
 
+export interface ReviewSpec {
+  label: string;
+  value: string;
+}
+
 export interface ReviewData {
   productName: string;
   originalPrice?: number;
   currentPrice: number;
   discountPercentage?: number;
+  score?: number;
+  summary?: string;
+  specs?: ReviewSpec[];
   pros: string[];
   cons: string[];
   affiliateLink: string;

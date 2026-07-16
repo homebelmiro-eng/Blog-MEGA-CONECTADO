@@ -52,6 +52,9 @@ const articleSchema = z.object({
     originalPrice: z.number().optional(),
     currentPrice: z.number().optional(),
     discountPercentage: z.number().optional(),
+    score: z.number().optional(),
+    summary: z.string().optional(),
+    specs: z.string().optional(),
     pros: z.string().optional(),
     cons: z.string().optional(),
     affiliateLink: z.string().optional(),
@@ -107,6 +110,9 @@ export default function AdminArticleEditor() {
         originalPrice: undefined,
         currentPrice: undefined,
         discountPercentage: undefined,
+        score: undefined,
+        summary: '',
+        specs: '',
         pros: '',
         cons: '',
         affiliateLink: '',
@@ -168,6 +174,7 @@ export default function AdminArticleEditor() {
           } else if (key === 'reviewData' && value) {
             setValue('reviewData', {
               ...value,
+              specs: Array.isArray(value.specs) ? value.specs.map((s: any) => `${s.label}:${s.value}`).join('\n') : '',
               pros: Array.isArray(value.pros) ? value.pros.join('\n') : '',
               cons: Array.isArray(value.cons) ? value.cons.join('\n') : '',
             });
@@ -255,15 +262,29 @@ export default function AdminArticleEditor() {
         Object.entries(data).filter(([_, v]) => v !== undefined)
       );
 
+      let cleanReviewData = null;
+      if (data.isReview && data.reviewData) {
+        cleanReviewData = {
+          ...Object.fromEntries(
+            Object.entries(data.reviewData).filter(([_, v]) => v !== undefined && v !== '')
+          ),
+          specs: data.reviewData.specs?.split('\n').map(line => {
+            const [label, ...val] = line.split(':');
+            if(label && val.length > 0) {
+              return { label: label.trim(), value: val.join(':').trim() };
+            }
+            return null;
+          }).filter(Boolean) || [],
+          pros: data.reviewData.pros?.split('\n').map(t => t.trim()).filter(Boolean) || [],
+          cons: data.reviewData.cons?.split('\n').map(t => t.trim()).filter(Boolean) || [],
+        };
+      }
+
       const articleData = {
         ...cleanData,
         faq: faqs.filter(f => f.question && f.answer),
         tags: data.tags?.split(',').map(t => t.trim()).filter(Boolean) || [],
-        reviewData: data.isReview && data.reviewData ? {
-          ...data.reviewData,
-          pros: data.reviewData.pros?.split('\n').map(t => t.trim()).filter(Boolean) || [],
-          cons: data.reviewData.cons?.split('\n').map(t => t.trim()).filter(Boolean) || [],
-        } : null,
+        reviewData: cleanReviewData,
         seo: {
           title: data.metaTitle || data.title,
           description: data.metaDescription || data.excerpt,
@@ -670,6 +691,33 @@ export default function AdminArticleEditor() {
                         />
                       </div>
                       <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nota (Score)</label>
+                        <Controller
+                          name="reviewData.score"
+                          control={control}
+                          render={({ field }) => (
+                            <input 
+                              type="number" 
+                              step="0.1"
+                              max="10"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
+                            />
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Resumo (Summary)</label>
+                        <Controller
+                          name="reviewData.summary"
+                          control={control}
+                          render={({ field }) => (
+                            <textarea {...field} rows={3} placeholder="Um breve resumo do produto..." className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm resize-none" />
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-2">
                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nome da Loja</label>
                         <Controller
                           name="reviewData.storeName"
@@ -686,6 +734,16 @@ export default function AdminArticleEditor() {
                           control={control}
                           render={({ field }) => (
                             <input {...field} placeholder="https://..." className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Especificações Principais (Formato: Label:Valor, uma por linha)</label>
+                        <Controller
+                          name="reviewData.specs"
+                          control={control}
+                          render={({ field }) => (
+                            <textarea {...field} rows={4} placeholder="Tela: 6.9 polegadas&#10;Bateria: 4200 mAh" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm resize-none" />
                           )}
                         />
                       </div>
