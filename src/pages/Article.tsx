@@ -17,6 +17,7 @@ import ReadingTime from '../components/ReadingTime';
 import FAQ from '../components/FAQ';
 import RelatedArticles from '../components/RelatedArticles';
 import OptimizedImage from '../components/OptimizedImage';
+import ReviewCard from '../components/ReviewCard';
 import { heroArticle, heroSideArticles, topNewsArticles, latestArticles } from '../data';
 import { Article as ArticleType, GlossaryTerm } from '../types';
 import authorPortrait from '../assets/images/divino_luciano_belmiro.jpg';
@@ -282,8 +283,14 @@ export default function Article() {
       <SocialShare />
 
       {article.imageUrl && (
-        <figure className="space-y-3 -mx-4 md:-mx-12 lg:-mx-16">
-          <div className="aspect-video w-full overflow-hidden shadow-2xl">
+        <figure className="space-y-3 -mx-4 md:-mx-12 lg:-mx-16 relative">
+          {article.isReview && (
+            <div className="absolute top-4 left-4 z-10 bg-brand-primary text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-1">
+              <Tag className="w-3 h-3" />
+              Achado do Dia
+            </div>
+          )}
+          <div className="aspect-video w-full overflow-hidden shadow-2xl relative">
             <OptimizedImage 
               src={article.imageUrl} 
               alt={article.imageAlt || article.title} 
@@ -298,6 +305,10 @@ export default function Article() {
             </figcaption>
           )}
         </figure>
+      )}
+
+      {article.isReview && article.reviewData && (
+        <ReviewCard data={article.reviewData} />
       )}
 
       <div className="article-body">

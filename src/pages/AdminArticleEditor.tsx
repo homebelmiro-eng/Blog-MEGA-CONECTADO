@@ -46,6 +46,19 @@ const articleSchema = z.object({
   latitude: z.number().optional(),
   longitude: z.number().optional(),
   geoEnabled: z.boolean().optional(),
+  isReview: z.boolean().optional(),
+  reviewData: z.object({
+    productName: z.string().optional(),
+    originalPrice: z.number().optional(),
+    currentPrice: z.number().optional(),
+    discountPercentage: z.number().optional(),
+    pros: z.string().optional(),
+    cons: z.string().optional(),
+    affiliateLink: z.string().optional(),
+    storeName: z.string().optional(),
+    whatsappLink: z.string().optional(),
+    telegramLink: z.string().optional(),
+  }).optional()
 });
 
 type ArticleFormValues = z.infer<typeof articleSchema>;
@@ -87,7 +100,20 @@ export default function AdminArticleEditor() {
       imageUrl: '',
       tags: '',
       locationName: '',
-      geoEnabled: false
+      geoEnabled: false,
+      isReview: false,
+      reviewData: {
+        productName: '',
+        originalPrice: undefined,
+        currentPrice: undefined,
+        discountPercentage: undefined,
+        pros: '',
+        cons: '',
+        affiliateLink: '',
+        storeName: '',
+        whatsappLink: '',
+        telegramLink: ''
+      }
     }
   });
 
@@ -139,6 +165,12 @@ export default function AdminArticleEditor() {
             }
           } else if (key === 'faq') {
             setFaqs(value as any[]);
+          } else if (key === 'reviewData' && value) {
+            setValue('reviewData', {
+              ...value,
+              pros: Array.isArray(value.pros) ? value.pros.join('\n') : '',
+              cons: Array.isArray(value.cons) ? value.cons.join('\n') : '',
+            });
           } else {
             setValue(key as keyof ArticleFormValues, value);
           }
@@ -227,6 +259,11 @@ export default function AdminArticleEditor() {
         ...cleanData,
         faq: faqs.filter(f => f.question && f.answer),
         tags: data.tags?.split(',').map(t => t.trim()).filter(Boolean) || [],
+        reviewData: data.isReview && data.reviewData ? {
+          ...data.reviewData,
+          pros: data.reviewData.pros?.split('\n').map(t => t.trim()).filter(Boolean) || [],
+          cons: data.reviewData.cons?.split('\n').map(t => t.trim()).filter(Boolean) || [],
+        } : null,
         seo: {
           title: data.metaTitle || data.title,
           description: data.metaDescription || data.excerpt,
@@ -546,6 +583,155 @@ export default function AdminArticleEditor() {
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+              <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-brand-secondary" />
+                Dados de Review (Opcional)
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Controller
+                    name="isReview"
+                    control={control}
+                    render={({ field }) => (
+                      <input 
+                        type="checkbox" 
+                        id="isReview"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        className="w-4 h-4 rounded text-brand-secondary focus:ring-brand-secondary"
+                      />
+                    )}
+                  />
+                  <label htmlFor="isReview" className="text-sm font-bold text-slate-700">Ativar Card de Review</label>
+                </div>
+
+                {watch('isReview') && (
+                  <div className="space-y-4 mt-4 border-t border-slate-100 pt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nome do Produto</label>
+                        <Controller
+                          name="reviewData.productName"
+                          control={control}
+                          render={({ field }) => (
+                            <input {...field} placeholder="Ex: Motorola Razr 70 5G" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Preço Original (R$)</label>
+                        <Controller
+                          name="reviewData.originalPrice"
+                          control={control}
+                          render={({ field }) => (
+                            <input 
+                              type="number" 
+                              step="0.01"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
+                            />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Preço Atual (R$)</label>
+                        <Controller
+                          name="reviewData.currentPrice"
+                          control={control}
+                          render={({ field }) => (
+                            <input 
+                              type="number" 
+                              step="0.01"
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
+                            />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">% Desconto</label>
+                        <Controller
+                          name="reviewData.discountPercentage"
+                          control={control}
+                          render={({ field }) => (
+                            <input 
+                              type="number" 
+                              value={field.value || ''}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" 
+                            />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nome da Loja</label>
+                        <Controller
+                          name="reviewData.storeName"
+                          control={control}
+                          render={({ field }) => (
+                            <input {...field} placeholder="Ex: Mercado Livre" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Link de Afiliado</label>
+                        <Controller
+                          name="reviewData.affiliateLink"
+                          control={control}
+                          render={({ field }) => (
+                            <input {...field} placeholder="https://..." className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Prós (um por linha)</label>
+                        <Controller
+                          name="reviewData.pros"
+                          control={control}
+                          render={({ field }) => (
+                            <textarea {...field} rows={4} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm resize-none" />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Contras (um por linha)</label>
+                        <Controller
+                          name="reviewData.cons"
+                          control={control}
+                          render={({ field }) => (
+                            <textarea {...field} rows={4} className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm resize-none" />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Link WhatsApp (Opcional)</label>
+                        <Controller
+                          name="reviewData.whatsappLink"
+                          control={control}
+                          render={({ field }) => (
+                            <input {...field} placeholder="https://wa.me/..." className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Link Telegram (Opcional)</label>
+                        <Controller
+                          name="reviewData.telegramLink"
+                          control={control}
+                          render={({ field }) => (
+                            <input {...field} placeholder="https://t.me/..." className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" />
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

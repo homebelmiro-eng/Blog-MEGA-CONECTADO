@@ -2,13 +2,34 @@ import { Article } from './types';
 
 export const heroArticle: Article = {
   id: '1',
-  title: 'O Futuro da Criação de Conteúdo e Design',
-  category: 'Inteligência Artificial',
+  title: 'Motorola Razr 70 (256 GB) cai R$ 1.200 com cupom exclusivo no Mercado Livre',
+  category: 'Smartphones',
   date: '12 de Julho de 2026',
   author: 'Equipe Editorial',
-  excerpt: 'A inteligência artificial generativa está redefinindo as fronteiras criativas. Descubra como novas ferramentas estão moldando o futuro de indústrias inteiras e o que isso significa para os profissionais da área tecnológica.',
-  imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBWgJ2qCfmj3iBdTrsTBWA6iqbgnMo0OfOLnH-qxzK3hBAY5PHAXtjURgjIUL5TDOcfOnk0qi_ZOuS6ZDUelMp_ejTO22sWBfPf3ffAoKmspJXkLMjbnXutiKvHSCF3ja5sBcz9Z-rv71f6oMvlGSnox9bvxdb0cKEwwrBbaWKIbsFtVpbsMc8_9bUmB2fNrDEcrSBhWO6DcSas6cYu7d3M2g0EF0aJWcUbK06upuL3w1tp5mCCF_wdRIUEn07Q7x8Cr07lcIZzHfbm',
-  imageAlt: 'Figura robótica interagindo com interface holográfica',
+  excerpt: 'Novo dobrável da Motorola tem desconto de 22% com cupom disponível para novos seguidores da loja Motorola; telas AMOLED e câmeras de 50 MP são destaques',
+  imageUrl: 'https://images.unsplash.com/photo-1598327105666-5b89351cb315?w=1200&q=80',
+  imageAlt: 'Motorola Razr 70',
+  isReview: true,
+  reviewData: {
+    productName: 'Motorola Razr 70 5G 256 GB',
+    originalPrice: 6399,
+    currentPrice: 4707.84,
+    discountPercentage: 22,
+    pros: [
+      'Telas com tecnologia AMOLED',
+      'Construção com dobradiça em titânio',
+      'Câmeras traseiras de 50 MP',
+      'Chega com Android 14'
+    ],
+    cons: [
+      'Sem certificação IP68',
+      'Poucas evoluções ao Razr 40'
+    ],
+    affiliateLink: 'https://mercadolivre.com',
+    storeName: 'Mercado Livre',
+    whatsappLink: 'https://wa.me/?text=Confira%20este%20produto',
+    telegramLink: 'https://t.me/share/url?url=Confira%20este%20produto'
+  },
   faq: [
     {
       question: "O que é IA Generativa?",

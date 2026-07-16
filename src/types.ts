@@ -3,6 +3,20 @@ export interface FAQItem {
   answer: string;
 }
 
+export interface ReviewData {
+  productName: string;
+  originalPrice?: number;
+  currentPrice: number;
+  discountPercentage?: number;
+  pros: string[];
+  cons: string[];
+  affiliateLink: string;
+  storeName: string;
+  couponCode?: string;
+  telegramLink?: string;
+  whatsappLink?: string;
+}
+
 export interface Article {
   id: string;
   title: string;
@@ -26,6 +40,9 @@ export interface Article {
   locationName?: string;
   latitude?: number;
   longitude?: number;
+  // Review specific data
+  isReview?: boolean;
+  reviewData?: ReviewData;
 }
 
 export interface GlossaryTerm {
